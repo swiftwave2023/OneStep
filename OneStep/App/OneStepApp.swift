@@ -11,27 +11,34 @@ import KeyboardShortcuts
 @main
 struct OneStepApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var appModel = AppModel.shared
     
     var body: some Scene {
-        // Settings Window
+        // We use SettingsWindowController for Settings window to ensure
+        // it works correctly with NSStatusItem click action (which is not supported by MenuBarExtra yet)
         Settings {
-            SettingsView()
-                .environmentObject(AppModel.shared)
+            EmptyView()
         }
     }
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var statusItem: NSStatusItem!
+    var statusItem: NSStatusItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Setup status item
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: "OneStep")
-            button.action = #selector(toggleOneStep)
-            button.target = self
-        }
+        // Register defaults
+        UserDefaults.standard.register(defaults: [
+            "showDockIcon": true,
+            "showMenuBarIcon": true
+        ])
+        
+        // Initial setup
+        updateDockIconVisibility()
+        updateMenuBarIconVisibility()
+        
+        // Setup observers
+        NotificationCenter.default.addObserver(self, selector: #selector(dockIconVisibilityChanged), name: .dockIconVisibilityChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(menuBarIconVisibilityChanged), name: .menuBarIconVisibilityChanged, object: nil)
 
         // Setup hotkey listener
         KeyboardShortcuts.onKeyUp(for: .toggleOneStep) {
@@ -44,6 +51,47 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Task { @MainActor in
             _ = WindowManager.shared
             WindowManager.shared.showWindow()
+        }
+    }
+    
+    @objc func dockIconVisibilityChanged() {
+        updateDockIconVisibility()
+    }
+    
+    @objc func menuBarIconVisibilityChanged() {
+        updateMenuBarIconVisibility()
+    }
+    
+    private func updateDockIconVisibility() {
+        let show = UserDefaults.standard.bool(forKey: "showDockIcon")
+        if show {
+            NSApp.setActivationPolicy(.regular)
+        } else {
+            NSApp.setActivationPolicy(.accessory)
+        }
+        
+        // When switching to .regular, the app might need to be activated to show up properly in Dock immediately
+        if show {
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+    
+    private func updateMenuBarIconVisibility() {
+        let show = UserDefaults.standard.bool(forKey: "showMenuBarIcon")
+        
+        if show {
+            if statusItem == nil {
+                let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+                if let button = item.button {
+                    button.image = NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: "OneStep")
+                    button.action = #selector(toggleOneStep)
+                    button.target = self
+                }
+                statusItem = item
+            }
+        } else {
+            // If hidden, remove the item
+            statusItem = nil
         }
     }
     
@@ -70,7 +118,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func openSettings() {
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-        NSApp.activate(ignoringOtherApps: true)
+        Task { @MainActor in
+            SettingsWindowController.shared.show()
+        }
     }
 }

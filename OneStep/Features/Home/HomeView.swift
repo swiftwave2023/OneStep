@@ -24,7 +24,6 @@ struct HomeView: View {
     @State private var suggestions: [SuggestionItem] = []
     @State private var selectedIndex: Int = 0
     @FocusState private var isFocused: Bool
-    @Environment(\.openWindow) var openWindow
     
     var body: some View {
         VStack(spacing: 0) {
@@ -40,6 +39,10 @@ struct HomeView: View {
                         .focused($isFocused)
                         .onSubmit {
                             handleCommand()
+                        }
+                        .onKeyPress(.return) {
+                            handleCommand()
+                            return .handled
                         }
                         .onChange(of: searchText) { _, _ in
                             updateSuggestions()
@@ -209,9 +212,8 @@ struct HomeView: View {
         }
     }
     
-    private func openSettings() {
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-        NSApp.activate(ignoringOtherApps: true)
+    @MainActor private func openSettings() {
+        SettingsWindowController.shared.show()
     }
 }
 

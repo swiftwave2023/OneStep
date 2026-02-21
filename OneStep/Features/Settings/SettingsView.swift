@@ -76,6 +76,14 @@ struct SettingsView: View {
         }
         .frame(minWidth: 700, maxWidth: 700, minHeight: 620, maxHeight: 620)
         .background(Color(nsColor: .windowBackgroundColor))
+        .background(WindowAccessor(callback: { window in
+            if let window = window {
+                appModel.settingsWindow = window
+                window.titlebarAppearsTransparent = true
+                window.standardWindowButton(.zoomButton)?.isHidden = true
+                window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            }
+        }))
         .onChange(of: selectedPage) { _, newValue in
             if newValue == .rateUs {
                 RateUtil.requestReview(id: appModel.appId)

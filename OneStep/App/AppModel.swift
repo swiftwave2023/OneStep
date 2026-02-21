@@ -15,6 +15,10 @@ class AppModel: ObservableObject {
     
     // MARK: - Properties
     
+    // MARK: - Window Management
+    weak var settingsWindow: NSWindow?
+    @Published var shouldOpenSettings: Bool = false
+    
     /// 用户是否已登录
     @Published var isLoggedIn: Bool = false
     
