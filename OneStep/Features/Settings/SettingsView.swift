@@ -1,0 +1,128 @@
+//
+//  SettingsView.swift
+//  OneStep
+//
+//  Created by lixiaolong on 2026/2/21.
+//
+
+import SwiftUI
+import StoreKit
+
+enum SettingPage: CaseIterable, Identifiable {
+    case general
+    case iap
+    case contactUs
+    case rateUs
+    
+    var id: Self { self }
+    
+    var nav: SettingNavData {
+        switch self {
+        case .general:
+            return .general
+        case .iap:
+            return .iap
+        case .contactUs:
+            return .contactUs
+        case .rateUs:
+            return .rateUs
+        }
+    }
+}
+
+struct SettingsView: View {
+    @EnvironmentObject var appModel: AppModel
+    
+    var store: IAPStore {
+        appModel.iapStore
+    }
+    
+    @State var selectedPage: SettingPage = .general
+    @State private var iapProcessing: Bool = false
+    
+    var body: some View {
+        NavigationSplitView {
+            sidebar
+        } detail: {
+            switch selectedPage {
+            case .general:
+                GeneralPageView()
+            case .iap:
+                IAPPageView(appName: appModel.appName,
+                            isPro: appModel.isPro,
+                            isProcessing: $iapProcessing,
+                            products: getIAPProductsToDisplay(),
+                            purchasedProductIDs: store.purchasedProductIDs,
+                            lifetimeProductID: store.products.first(where: { $0.type == .nonConsumable })?.id ?? "product.com.swiftwave.onestep.lifetime",
+                            infos: iapInfos,
+                            onPurchase: { id in
+                                await store.purchase(productId: id)
+                            }, onRestore: {
+                                await store.restore()
+                            })
+                .task {
+                    await store.refresh()
+                }
+            case .contactUs:
+                ContactUsPageView(appName: appModel.appName, isPro: appModel.isPro)
+            case .rateUs:
+                // Rate logic handled in onChange, but we need a view here
+                Text("Redirecting to App Store...")
+                    .onAppear {
+                        // In case onChange doesn't catch it or we navigate directly
+                        RateUtil.requestReview(id: appModel.appId)
+                    }
+            }
+        }
+        .frame(minWidth: 700, maxWidth: 700, minHeight: 620, maxHeight: 620)
+        .background(Color(nsColor: .windowBackgroundColor))
+        .onChange(of: selectedPage) { _, newValue in
+            if newValue == .rateUs {
+                RateUtil.requestReview(id: appModel.appId)
+                // Switch back to previous page or stay? 
+                // Shortcutly switches back, but let's keep it simple for now or follow Shortcutly behavior
+                // For better UX, maybe switch back to general after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    selectedPage = .general
+                }
+            }
+        }
+    }
+    
+    var sidebar: some View {
+        VStack {
+            List(selection: $selectedPage) {
+                ProLogo(appName: appModel.appName, isPro: appModel.isPro)
+                    .padding(.bottom)
+                ForEach(SettingPage.allCases) { page in
+                    NavigationLink(value: page) {
+                        SettingNavLabel(nav: page.nav)
+                    }
+                }
+            }
+            .listStyle(.sidebar)
+        }
+        .navigationSplitViewColumnWidth(min: 220, ideal: 220, max: 220)
+    }
+    
+    private var iapInfos: [IAPInfo] {
+        [
+            IAPInfo(icon: "magnifyingglass", title: "Enhanced Search", subTitle: "Search deeper into your system."),
+            IAPInfo(icon: "command", title: "Advanced Commands", subTitle: "Execute system commands directly."),
+            IAPInfo(icon: "star.fill", title: "Priority Support", subTitle: "Get priority support for any issues."),
+            IAPInfo(icon: "sparkles", title: "More Features Coming Soon", subTitle: "Stay tuned for more exciting features.")
+        ]
+    }
+    
+    private func getIAPProductsToDisplay() -> [IAPProductDisplay] {
+        if !store.products.isEmpty {
+            return store.products.map { IAPProductDisplay(product: $0) }
+        } else {
+            return [
+                IAPProductDisplay(id: "product.com.swiftwave.onestep.monthly", displayName: "Monthly", displayPrice: "$1.99", type: .autoRenewable, unit: .month),
+                IAPProductDisplay(id: "product.com.swiftwave.onestep.yearly", displayName: "Yearly", displayPrice: "$9.99", type: .autoRenewable, unit: .year, isFreeTrial: true, trialDays: 7),
+                IAPProductDisplay(id: "product.com.swiftwave.onestep.lifetime", displayName: "Lifetime", displayPrice: "$29.99", type: .nonConsumable)
+            ]
+        }
+    }
+}

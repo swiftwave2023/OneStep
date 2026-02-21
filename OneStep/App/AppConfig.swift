@@ -39,4 +39,13 @@ struct AppConfig {
     // MARK: - UI Constants
     /// 默认动画时长
     static let defaultAnimationDuration: Double = 0.3
+    
+    // MARK: - IAP
+    enum IAP {
+        static let monthly = "product.com.swiftwave.onestep.monthly"
+        static let yearly = "product.com.swiftwave.onestep.yearly"
+        static let lifetime = "product.com.swiftwave.onestep.lifetime"
+        
+        static let allProductIDs = [monthly, yearly, lifetime]
+    }
 }
