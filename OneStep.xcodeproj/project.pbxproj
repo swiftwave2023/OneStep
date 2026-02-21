@@ -11,10 +11,12 @@
 		31C6DC862F49A46900857858 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 31C6DC852F49A46900857858 /* KeychainAccess */; };
 		31C6DCED2F49AC7200857858 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 31C6DCEC2F49AC7200857858 /* Defaults */; };
 		31C6DCEF2F49AC7200857858 /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 31C6DCEE2F49AC7200857858 /* DefaultsMacros */; };
+		31C6DD072F49C6F900857858 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 31C6DD062F49C6F900857858 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		31C6DC0B2F498C1300857858 /* OneStep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneStep.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C6DD062F49C6F900857858 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,6 +47,7 @@
 			children = (
 				31C6DC0D2F498C1300857858 /* OneStep */,
 				31C6DC0C2F498C1300857858 /* Products */,
+				31C6DD062F49C6F900857858 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +135,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31C6DD072F49C6F900857858 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
