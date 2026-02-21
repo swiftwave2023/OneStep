@@ -28,81 +28,97 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 12) {
-                // Search Icon
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 22, weight: .medium))
-                    .foregroundColor(.secondary)
-                
-                // Search Field
-                TextField("Search or enter command...", text: $searchText)
-                    .font(.system(size: 26, weight: .light)) // Modern thin font
-                    .textFieldStyle(.plain)
-                    .focused($isFocused)
-                    .onSubmit {
-                        // Handle command
-                        handleCommand()
-                    }
-                    .onChange(of: searchText) { _, newValue in
-                        updateSuggestions()
-                    }
-                    .onKeyPress(.downArrow) {
-                        moveSelection(down: true)
-                        return .handled
-                    }
-                    .onKeyPress(.upArrow) {
-                        moveSelection(down: false)
-                        return .handled
-                    }
-                
-                // Clear button
-                if !searchText.isEmpty {
-                    Button(action: {
-                        searchText = ""
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 16))
-                            .foregroundColor(.secondary)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-            .background(.ultraThinMaterial) // Frosted glass effect
-            .cornerRadius(16) // Rounded corners
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.white.opacity(0.2), lineWidth: 0.5)
-            )
-            
-            // Suggestions List
-            if !suggestions.isEmpty {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
-                            SuggestionRow(item: item, isSelected: index == selectedIndex)
-                                .onTapGesture {
-                                    item.action()
-                                }
+            VStack(spacing: 10) {
+                HStack(spacing: 12) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(.secondary)
+                    
+                    TextField("Search or type / for commands…", text: $searchText)
+                        .font(.system(size: 26, weight: .light))
+                        .textFieldStyle(.plain)
+                        .focused($isFocused)
+                        .onSubmit {
+                            handleCommand()
                         }
+                        .onChange(of: searchText) { _, _ in
+                            updateSuggestions()
+                        }
+                        .onKeyPress(.downArrow) {
+                            moveSelection(down: true)
+                            return .handled
+                        }
+                        .onKeyPress(.upArrow) {
+                            moveSelection(down: false)
+                            return .handled
+                        }
+                    
+                    if !searchText.isEmpty {
+                        Button {
+                            searchText = ""
+                            updateSuggestions()
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-                .frame(maxHeight: 300)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
-                )
-                .padding(.top, 8)
+            }
+            .padding(.horizontal, 18)
+            .padding(.vertical, 12)
+            
+            if !searchText.isEmpty {
+                Rectangle()
+                    .fill(Color.white.opacity(0.08))
+                    .frame(height: 1)
+                    .padding(.horizontal, 8)
+            }
+            
+            if !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                VStack(spacing: 0) {
+                    if !suggestions.isEmpty {
+                        ScrollView {
+                            LazyVStack(spacing: 0) {
+                                ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
+                                    SuggestionRow(item: item, isSelected: index == selectedIndex)
+                                        .onTapGesture {
+                                            item.action()
+                                        }
+                                }
+                            }
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 8)
+                        }
+                        .frame(maxHeight: 360)
+                    } else {
+                        let isCommand = searchText.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("/")
+                        VStack(spacing: 6) {
+                            Text(isCommand ? "No matching commands" : "No results")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.secondary)
+                            Text(isCommand ? "Type / to see available commands" : "Try different keywords or type / for commands")
+                                .font(.system(size: 12))
+                                .foregroundColor(.secondary.opacity(0.9))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 24)
+                        .padding(.horizontal, 16)
+                    }
+                }
+                .padding(.top, 6)
+                .padding(.bottom, 12)
             }
         }
-        .padding(20) // Outer padding for shadow breathing room
-        .frame(width: 750)
-        .onAppear {
-            isFocused = true
-        }
+        .padding(6)
+        .background(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(.ultraThinMaterial)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .frame(width: 780)
+        .onAppear { isFocused = true }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
             isFocused = true
         }
@@ -115,29 +131,57 @@ struct HomeView: View {
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if trimmed.hasPrefix("/") {
-            // Command mode
-            if "/settings".hasPrefix(trimmed) {
-                suggestions = [
-                    SuggestionItem(
-                        icon: "gear",
-                        title: "Open Settings",
-                        subtitle: "Open the preferences window",
-                        action: {
-                            openSettings()
-                            searchText = ""
-                            WindowManager.shared.hideWindow()
-                        }
-                    )
-                ]
-            } else {
-                suggestions = []
-            }
+            suggestions = commandSuggestions(matching: trimmed)
         } else {
             // Normal search mode (can add more logic here)
             suggestions = []
         }
         
         // Notify WindowManager to resize (implementation detail left to WindowManager or GeometryReader)
+    }
+    
+    private func commandSuggestions(matching input: String) -> [SuggestionItem] {
+        let all: [SuggestionItem] = [
+            SuggestionItem(
+                icon: "gearshape",
+                title: "/settings",
+                subtitle: "Open Settings",
+                action: {
+                    openSettings()
+                    searchText = ""
+                    WindowManager.shared.hideWindow()
+                }
+            ),
+            SuggestionItem(
+                icon: "keyboard",
+                title: "/shortcuts",
+                subtitle: "View keyboard shortcuts",
+                action: {
+                    NSApp.activate(ignoringOtherApps: true)
+                }
+            ),
+            SuggestionItem(
+                icon: "eye.slash",
+                title: "/hide",
+                subtitle: "Hide panel",
+                action: {
+                    WindowManager.shared.hideWindow()
+                }
+            ),
+            SuggestionItem(
+                icon: "power",
+                title: "/quit",
+                subtitle: "Quit app",
+                action: {
+                    NSApp.terminate(nil)
+                }
+            )
+        ]
+        
+        if input == "/" {
+            return all
+        }
+        return all.filter { $0.title.hasPrefix(input) }
     }
     
     private func moveSelection(down: Bool) {
@@ -212,6 +256,6 @@ struct SuggestionRow: View {
 
 #Preview {
     HomeView()
-        .frame(width: 800, height: 200)
-        .background(Color.black)
+        .frame(width: 820, height: 520)
+        .background(Color.clear)
 }
