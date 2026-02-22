@@ -156,27 +156,11 @@ struct HomeView: View {
                 }
             ),
             SuggestionItem(
-                icon: "keyboard",
-                title: "/shortcuts",
-                subtitle: "View keyboard shortcuts",
-                action: {
-                    NSApp.activate(ignoringOtherApps: true)
-                }
-            ),
-            SuggestionItem(
-                icon: "eye.slash",
-                title: "/hide",
-                subtitle: "Hide panel",
-                action: {
-                    WindowManager.shared.hideWindow()
-                }
-            ),
-            SuggestionItem(
                 icon: "power",
                 title: "/quit",
-                subtitle: "Quit app",
+                subtitle: "Quit OneStep",
                 action: {
-                    NSApp.terminate(nil)
+                    NSApplication.shared.terminate(nil)
                 }
             )
         ]
@@ -204,10 +188,13 @@ struct HomeView: View {
         } else {
             print("Command submitted: \(searchText)")
             // Fallback for direct commands if any
-            if searchText.trimmingCharacters(in: .whitespacesAndNewlines) == "/settings" {
+            let command = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+            if command == "/settings" {
                 openSettings()
                 searchText = ""
                 WindowManager.shared.hideWindow()
+            } else if command == "/quit" {
+                NSApplication.shared.terminate(nil)
             }
         }
     }
