@@ -145,7 +145,7 @@ struct HomeView: View {
                         WindowManager.shared.hideWindow()
                     }
                 }
-            } else {
+            } else if !searchText.isEmpty {
                 VStack(spacing: 0) {
                     if !suggestions.isEmpty {
                         ScrollView {
