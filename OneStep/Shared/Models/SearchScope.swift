@@ -8,7 +8,7 @@ struct SearchScope: Identifiable, Codable, Hashable, Sendable, Defaults.Serializ
     var bookmarkData: Data?
     
     // Resolve URL with security scope if bookmark exists
-    func resolvedURL() -> URL? {
+    nonisolated func resolvedURL() -> URL? {
         guard let data = bookmarkData else { return url }
         var isStale = false
         // Try to resolve the bookmark

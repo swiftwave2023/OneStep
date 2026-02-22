@@ -11,6 +11,7 @@ struct FileItem: Identifiable, Hashable, Sendable {
     let id = UUID()
     let name: String
     let path: String
+    let modificationDate: Date
     
     // Cache for search
     let pinyin: String
@@ -103,11 +104,24 @@ class FileSearchService: ObservableObject {
         let name = url.lastPathComponent
         let path = url.path
         
+        // Get modification date
+        let modificationDate: Date
+        do {
+            let values = try url.resourceValues(forKeys: [.contentModificationDateKey])
+            modificationDate = values.contentModificationDate ?? Date.distantPast
+        } catch {
+            modificationDate = Date.distantPast
+        }
+        
         // Generate Pinyin
         let pinyin = name.toPinyin()
         let initials = name.toPinyinInitials()
         
-        return FileItem(name: name, path: path, pinyin: pinyin, initials: initials)
+        return FileItem(name: name, path: path, modificationDate: modificationDate, pinyin: pinyin, initials: initials)
+    }
+    
+    func getRecentFiles(limit: Int = 20) -> [FileItem] {
+        return files.sorted { $0.modificationDate > $1.modificationDate }.prefix(limit).map { $0 }
     }
     
     func search(text: String) -> [FileItem] {

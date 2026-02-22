@@ -129,6 +129,9 @@ struct HomeView: View {
             .onChange(of: searchText) { _, _ in
                 updateSuggestions()
             }
+            .onChange(of: fileSearchService.files) { _, _ in
+                updateSuggestions()
+            }
             .onKeyPress(.downArrow) {
                 moveSelection(down: true)
                 return .handled
@@ -166,8 +169,12 @@ struct HomeView: View {
         Group {
             if selectedCommand?.title == "/apps" {
                 appsGridView
-            } else if selectedCommand?.title == "/files" && searchText.isEmpty {
-                fileSearchPromptView
+            } else if selectedCommand?.title == "/files" {
+                if searchText.isEmpty && suggestions.isEmpty {
+                    fileSearchPromptView
+                } else {
+                    suggestionsListView
+                }
             } else if !searchText.isEmpty {
                 suggestionsListView
             }
@@ -254,7 +261,13 @@ struct HomeView: View {
                  suggestions = [] // Grid view handles this
             } else if command.title == "/files" {
                 // File search
-                let files = fileSearchService.search(text: trimmed)
+                let files: [FileItem]
+                if trimmed.isEmpty {
+                    files = fileSearchService.getRecentFiles()
+                } else {
+                    files = fileSearchService.search(text: trimmed)
+                }
+                
                 suggestions = files.map { file in
                     SuggestionItem(
                         icon: .image(NSWorkspace.shared.icon(forFile: file.path)),
