@@ -13,7 +13,6 @@ struct AppItem: Identifiable, Hashable, Sendable {
     let id = UUID()
     let name: String
     let path: String
-    let icon: NSImage
     
     // Cache for search
     let pinyin: String
@@ -27,9 +26,6 @@ struct AppItem: Identifiable, Hashable, Sendable {
         lhs.id == rhs.id
     }
 }
-
-// Make NSImage Sendable for our usage (unchecked is acceptable here as NSImage is thread-safe for reading)
-extension NSImage: @unchecked Sendable {}
 
 @MainActor
 class AppManager: ObservableObject {
@@ -98,14 +94,11 @@ class AppManager: ObservableObject {
         let url = URL(fileURLWithPath: path)
         let name = url.deletingPathExtension().lastPathComponent
         
-        // Get icon
-        let icon = NSWorkspace.shared.icon(forFile: path)
-        
         // Generate Pinyin and Initials
         let pinyin = name.toPinyin()
         let initials = name.toPinyinInitials()
         
-        return AppItem(name: name, path: path, icon: icon, pinyin: pinyin, initials: initials)
+        return AppItem(name: name, path: path, pinyin: pinyin, initials: initials)
     }
     
     func search(text: String) -> [AppItem] {
@@ -129,24 +122,5 @@ class AppManager: ObservableObject {
                 print("Failed to launch app: \(error.localizedDescription)")
             }
         }
-    }
-}
-
-// MARK: - String Extensions for Pinyin
-extension String {
-    func toPinyin() -> String {
-        let mutableString = NSMutableString(string: self)
-        CFStringTransform(mutableString, nil, kCFStringTransformToLatin, false)
-        CFStringTransform(mutableString, nil, kCFStringTransformStripDiacritics, false)
-        return (mutableString as String).lowercased().replacingOccurrences(of: " ", with: "")
-    }
-    
-    func toPinyinInitials() -> String {
-        let mutableString = NSMutableString(string: self)
-        CFStringTransform(mutableString, nil, kCFStringTransformToLatin, false)
-        CFStringTransform(mutableString, nil, kCFStringTransformStripDiacritics, false)
-        
-        let components = (mutableString as String).components(separatedBy: " ")
-        return components.compactMap { $0.first }.map { String($0) }.joined().lowercased()
     }
 }

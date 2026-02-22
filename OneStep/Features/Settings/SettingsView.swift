@@ -10,6 +10,7 @@ import StoreKit
 
 enum SettingPage: CaseIterable, Identifiable {
     case general
+    case fileSearch
     case iap
     case contactUs
     case rateUs
@@ -20,6 +21,8 @@ enum SettingPage: CaseIterable, Identifiable {
         switch self {
         case .general:
             return .general
+        case .fileSearch:
+            return .fileSearch
         case .iap:
             return .iap
         case .contactUs:
@@ -28,6 +31,10 @@ enum SettingPage: CaseIterable, Identifiable {
             return .rateUs
         }
     }
+}
+
+extension SettingNavData {
+    static let fileSearch = Self(icon: "folder", iconColor: .blue, title: "File Search")
 }
 
 struct SettingsView: View {
@@ -47,6 +54,8 @@ struct SettingsView: View {
             switch selectedPage {
             case .general:
                 GeneralPageView()
+            case .fileSearch:
+                FileSearchSettingsView()
             case .iap:
                 IAPPageView(appName: appModel.appName,
                             isPro: appModel.isPro,

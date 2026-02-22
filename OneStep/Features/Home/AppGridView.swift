@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct AppGridView: View {
     let apps: [AppItem]
@@ -23,7 +24,7 @@ struct AppGridView: View {
                         onSelect(app)
                     } label: {
                         VStack(spacing: 8) {
-                            Image(nsImage: app.icon)
+                            Image(nsImage: NSWorkspace.shared.icon(forFile: app.path))
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 48, height: 48)

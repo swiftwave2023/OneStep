@@ -27,6 +27,7 @@ struct SuggestionItem: Identifiable, Equatable {
     let title: String
     let subtitle: String?
     let action: () -> Void
+    var fileURL: URL? = nil
     
     static func == (lhs: SuggestionItem, rhs: SuggestionItem) -> Bool {
         lhs.id == rhs.id
@@ -35,6 +36,7 @@ struct SuggestionItem: Identifiable, Equatable {
 
 struct HomeView: View {
     @StateObject private var appManager = AppManager.shared
+    @StateObject private var fileSearchService = FileSearchService.shared
     @State private var searchText = ""
     @State private var suggestions: [SuggestionItem] = []
     @State private var selectedIndex: Int = 0
@@ -43,142 +45,16 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 10) {
-                HStack(spacing: 12) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(.secondary)
-                    
-                    if let command = selectedCommand {
-                        HStack(spacing: 4) {
-                            switch command.icon {
-                            case .system(let name):
-                                Image(systemName: name)
-                                    .font(.system(size: 12))
-                            case .image(let nsImage):
-                                Image(nsImage: nsImage)
-                                    .resizable()
-                                    .frame(width: 12, height: 12)
-                            }
-                            Text(command.title)
-                                .font(.system(size: 13, weight: .medium))
-                        }
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 3)
-                        .background(Color.secondary.opacity(0.1))
-                        .cornerRadius(6)
-                    }
-                    
-                    TextField(selectedCommand == nil ? "Search or type / for commands…" : "Search apps...", text: $searchText)
-                        .font(.system(size: 26, weight: .light))
-                        .textFieldStyle(.plain)
-                        .focused($isFocused)
-                        .id("search_field")
-                        .onSubmit {
-                            handleCommand()
-                        }
-                        .onKeyPress(.return) {
-                            handleCommand()
-                            return .handled
-                        }
-                        .onChange(of: searchText) { _, _ in
-                            updateSuggestions()
-                        }
-                        .onKeyPress(.downArrow) {
-                            moveSelection(down: true)
-                            return .handled
-                        }
-                        .onKeyPress(.upArrow) {
-                            moveSelection(down: false)
-                            return .handled
-                        }
-                        .background(
-                            DeleteKeyMonitor {
-                                if searchText.isEmpty && selectedCommand != nil {
-                                    selectedCommand = nil
-                                    updateSuggestions()
-                                    return true
-                                }
-                                return false
-                            }
-                        )
-                    
-                    if !searchText.isEmpty || selectedCommand != nil {
-                        Button {
-                            searchText = ""
-                            selectedCommand = nil
-                            updateSuggestions()
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.secondary)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 12)
+            searchBarView
             
             if !searchText.isEmpty || selectedCommand != nil {
                 Rectangle()
-                    .fill(Color.white.opacity(0.08))
-                    .frame(height: 1)
-                    .padding(.horizontal, 8)
+                .fill(Color.white.opacity(0.08))
+                .frame(height: 1)
+                .padding(.horizontal, 8)
             }
             
-            if selectedCommand?.title == "/apps" {
-                let appsToShow = getFilteredApps()
-                
-                if appsToShow.isEmpty {
-                     VStack(spacing: 6) {
-                        Text("No matching apps")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 24)
-                } else {
-                    AppGridView(apps: appsToShow) { app in
-                        appManager.launchApp(app)
-                        searchText = ""
-                        WindowManager.shared.hideWindow()
-                    }
-                }
-            } else if !searchText.isEmpty {
-                VStack(spacing: 0) {
-                    if !suggestions.isEmpty {
-                        ScrollView {
-                            LazyVStack(spacing: 0) {
-                                ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
-                                    SuggestionRow(item: item, isSelected: index == selectedIndex)
-                                        .onTapGesture {
-                                            item.action()
-                                        }
-                                }
-                            }
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 8)
-                        }
-                        .frame(maxHeight: 360)
-                    } else {
-                        let isCommand = searchText.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("/")
-                        VStack(spacing: 6) {
-                            Text(isCommand ? "No matching commands" : "No results")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(.secondary)
-                            Text(isCommand ? "Type / to see available commands" : "Try different keywords or type / for commands")
-                                .font(.system(size: 12))
-                                .foregroundColor(.secondary.opacity(0.9))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 24)
-                        .padding(.horizontal, 16)
-                    }
-                }
-                .padding(.top, 6)
-                .padding(.bottom, 12)
-            }
+            contentView
         }
         .padding(6)
         .background(
@@ -193,6 +69,180 @@ struct HomeView: View {
         }
     }
     
+    // MARK: - Subviews
+    
+    private var searchBarView: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 12) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(.secondary)
+                
+                if let command = selectedCommand {
+                    commandBadge(command)
+                }
+                
+                searchTextField
+                
+                if !searchText.isEmpty || selectedCommand != nil {
+                    clearButton
+                }
+            }
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+    }
+    
+    private func commandBadge(_ command: SuggestionItem) -> some View {
+        HStack(spacing: 4) {
+            switch command.icon {
+            case .system(let name):
+                Image(systemName: name)
+                    .font(.system(size: 12))
+            case .image(let nsImage):
+                Image(nsImage: nsImage)
+                    .resizable()
+                    .frame(width: 12, height: 12)
+            }
+            Text(command.title)
+                .font(.system(size: 13, weight: .medium))
+        }
+        .padding(.horizontal, 6)
+        .padding(.vertical, 3)
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(6)
+    }
+    
+    private var searchTextField: some View {
+        TextField(selectedCommand == nil ? "Search or type / for commands…" : "Search apps...", text: $searchText)
+            .font(.system(size: 26, weight: .light))
+            .textFieldStyle(.plain)
+            .focused($isFocused)
+            .id("search_field")
+            .onSubmit {
+                handleCommand()
+            }
+            .onKeyPress(.return) {
+                handleCommand()
+                return .handled
+            }
+            .onChange(of: searchText) { _, _ in
+                updateSuggestions()
+            }
+            .onKeyPress(.downArrow) {
+                moveSelection(down: true)
+                return .handled
+            }
+            .onKeyPress(.upArrow) {
+                moveSelection(down: false)
+                return .handled
+            }
+            .background(
+                DeleteKeyMonitor {
+                    if searchText.isEmpty && selectedCommand != nil {
+                        selectedCommand = nil
+                        updateSuggestions()
+                        return true
+                    }
+                    return false
+                }
+            )
+    }
+    
+    private var clearButton: some View {
+        Button {
+            searchText = ""
+            selectedCommand = nil
+            updateSuggestions()
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+            .font(.system(size: 16))
+            .foregroundStyle(.secondary)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var contentView: some View {
+        Group {
+            if selectedCommand?.title == "/apps" {
+                appsGridView
+            } else if selectedCommand?.title == "/files" && searchText.isEmpty {
+                fileSearchPromptView
+            } else if !searchText.isEmpty {
+                suggestionsListView
+            }
+        }
+    }
+    
+    private var appsGridView: some View {
+        let appsToShow = getFilteredApps()
+        return Group {
+            if appsToShow.isEmpty {
+                 VStack(spacing: 6) {
+                    Text("No matching apps")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
+            } else {
+                AppGridView(apps: appsToShow) { app in
+                    appManager.launchApp(app)
+                    searchText = ""
+                    WindowManager.shared.hideWindow()
+                }
+            }
+        }
+    }
+    
+    private var fileSearchPromptView: some View {
+        VStack(spacing: 6) {
+            Image(systemName: "doc.magnifyingglass")
+                .font(.system(size: 24))
+                .foregroundStyle(.secondary)
+            Text("Type to search files")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 32)
+    }
+    
+    private var suggestionsListView: some View {
+        VStack(spacing: 0) {
+            if !suggestions.isEmpty {
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
+                            SuggestionRow(item: item, isSelected: index == selectedIndex)
+                                .onTapGesture {
+                                    item.action()
+                                }
+                        }
+                    }
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 8)
+                }
+                .frame(maxHeight: 360)
+            } else {
+                let isCommand = searchText.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("/")
+                VStack(spacing: 6) {
+                    Text(isCommand ? "No matching commands" : "No results")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.secondary)
+                    Text(isCommand ? "Type / to see available commands" : "Try different keywords or type / for commands")
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary.opacity(0.9))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
+                .padding(.horizontal, 16)
+            }
+        }
+        .padding(.top, 6)
+        .padding(.bottom, 12)
+    }
+    
     private func updateSuggestions() {
         // Reset selection when search changes
         selectedIndex = 0
@@ -202,6 +252,22 @@ struct HomeView: View {
         if let command = selectedCommand {
             if command.title == "/apps" {
                  suggestions = [] // Grid view handles this
+            } else if command.title == "/files" {
+                // File search
+                let files = fileSearchService.search(text: trimmed)
+                suggestions = files.map { file in
+                    SuggestionItem(
+                        icon: .image(NSWorkspace.shared.icon(forFile: file.path)),
+                        title: file.name,
+                        subtitle: file.path,
+                        action: {
+                            fileSearchService.openFile(file.path)
+                            searchText = ""
+                            WindowManager.shared.hideWindow()
+                        },
+                        fileURL: URL(fileURLWithPath: file.path)
+                    )
+                }
             }
         } else {
             if trimmed.hasPrefix("/") {
@@ -209,18 +275,37 @@ struct HomeView: View {
             } else {
                 // App search
                 let apps = appManager.search(text: trimmed)
-                suggestions = apps.map { app in
+                let appItems = apps.map { app in
                     SuggestionItem(
-                        icon: .image(app.icon),
+                        icon: .image(NSWorkspace.shared.icon(forFile: app.path)),
                         title: app.name,
                         subtitle: app.path,
                         action: {
                             appManager.launchApp(app)
                             searchText = ""
                             WindowManager.shared.hideWindow()
-                        }
+                        },
+                        fileURL: URL(fileURLWithPath: app.path)
                     )
                 }
+                
+                // File search
+                let files = fileSearchService.search(text: trimmed)
+                let fileItems = files.map { file in
+                    SuggestionItem(
+                        icon: .image(NSWorkspace.shared.icon(forFile: file.path)),
+                        title: file.name,
+                        subtitle: file.path,
+                        action: {
+                            fileSearchService.openFile(file.path)
+                            searchText = ""
+                            WindowManager.shared.hideWindow()
+                        },
+                        fileURL: URL(fileURLWithPath: file.path)
+                    )
+                }
+                
+                suggestions = appItems + fileItems
             }
         }
         
@@ -228,13 +313,21 @@ struct HomeView: View {
     }
     
     private func commandSuggestions(matching input: String) -> [SuggestionItem] {
-        var all: [SuggestionItem] = [
+        let all: [SuggestionItem] = [
             SuggestionItem(
                 icon: .system("square.grid.2x2"),
                 title: "/apps",
                 subtitle: "Show all apps",
                 action: {
                     selectCommand(title: "/apps")
+                }
+            ),
+            SuggestionItem(
+                icon: .system("folder"),
+                title: "/files",
+                subtitle: "Search files",
+                action: {
+                    selectCommand(title: "/files")
                 }
             ),
             SuggestionItem(
@@ -294,8 +387,6 @@ struct HomeView: View {
     }
     
     private func handleCommand() {
-        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        
         if selectedCommand?.title == "/apps" {
             let apps = getFilteredApps()
             if apps.count == 1 {
@@ -321,6 +412,8 @@ struct HomeView: View {
                 NSApplication.shared.terminate(nil)
             } else if command == "/apps" {
                  selectCommand(title: "/apps")
+            } else if command == "/files" {
+                selectCommand(title: "/files")
             }
         }
     }
