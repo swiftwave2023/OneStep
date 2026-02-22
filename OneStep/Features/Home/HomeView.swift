@@ -37,6 +37,7 @@ struct SuggestionItem: Identifiable, Equatable {
 struct HomeView: View {
     @StateObject private var appManager = AppManager.shared
     @StateObject private var fileSearchService = FileSearchService.shared
+    @StateObject private var webSearchService = WebSearchService.shared
     @State private var searchText = ""
     @State private var suggestions: [SuggestionItem] = []
     @State private var selectedIndex: Int = 0
@@ -281,6 +282,46 @@ struct HomeView: View {
                         fileURL: URL(fileURLWithPath: file.path)
                     )
                 }
+            } else if command.title == "/web" {
+                // Web Search Logic
+                var items: [SuggestionItem] = []
+                
+                // 1. Web Search
+                if !trimmed.isEmpty, let url = webSearchService.getSearchURL(for: trimmed) {
+                    items.append(SuggestionItem(
+                        icon: .system("magnifyingglass"),
+                        title: "Search Web for '\(trimmed)'",
+                        subtitle: "Using \(webSearchService.selectedSearchEngine.rawValue)",
+                        action: {
+                            NSWorkspace.shared.open(url)
+                            searchText = ""
+                            WindowManager.shared.hideWindow()
+                        }
+                    ))
+                }
+                
+                // 2. Bookmarks
+                let bookmarks = webSearchService.searchBookmarks(query: trimmed)
+                // If query is empty, limit to top 5
+                let displayBookmarks = trimmed.isEmpty ? Array(bookmarks.prefix(5)) : bookmarks
+                
+                let bookmarkItems = displayBookmarks.map { bookmark in
+                    SuggestionItem(
+                        icon: .system("bookmark.fill"),
+                        title: bookmark.title,
+                        subtitle: bookmark.url,
+                        action: {
+                            if let url = URL(string: bookmark.url) {
+                                NSWorkspace.shared.open(url)
+                                searchText = ""
+                                WindowManager.shared.hideWindow()
+                            }
+                        },
+                        fileURL: URL(string: bookmark.url)
+                    )
+                }
+                items.append(contentsOf: bookmarkItems)
+                suggestions = items
             }
         } else {
             if trimmed.hasPrefix("/") {
@@ -319,6 +360,21 @@ struct HomeView: View {
                 }
                 
                 suggestions = appItems + fileItems
+                
+                // Add Web Search Option
+                if !trimmed.isEmpty, let webURL = webSearchService.getSearchURL(for: trimmed) {
+                    let webItem = SuggestionItem(
+                        icon: .system("globe"),
+                        title: "Search Web for '\(trimmed)'",
+                        subtitle: "Using \(webSearchService.selectedSearchEngine.rawValue)",
+                        action: {
+                            NSWorkspace.shared.open(webURL)
+                            searchText = ""
+                            WindowManager.shared.hideWindow()
+                        }
+                    )
+                    suggestions.append(webItem)
+                }
             }
         }
         
@@ -341,6 +397,14 @@ struct HomeView: View {
                 subtitle: "Search files",
                 action: {
                     selectCommand(title: "/files")
+                }
+            ),
+            SuggestionItem(
+                icon: .system("globe"),
+                title: "/web",
+                subtitle: "Web search & bookmarks",
+                action: {
+                    selectCommand(title: "/web")
                 }
             ),
             SuggestionItem(
@@ -427,6 +491,8 @@ struct HomeView: View {
                  selectCommand(title: "/apps")
             } else if command == "/files" {
                 selectCommand(title: "/files")
+            } else if command == "/web" {
+                selectCommand(title: "/web")
             }
         }
     }
