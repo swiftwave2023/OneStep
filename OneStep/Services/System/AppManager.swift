@@ -7,11 +7,13 @@
 
 import SwiftUI
 import AppKit
+import CoreServices
 internal import Combine
 
 struct AppItem: Identifiable, Hashable, Sendable {
     let id = UUID()
     let name: String
+    let fileSystemName: String
     let path: String
     
     // Cache for search
@@ -92,13 +94,62 @@ class AppManager: ObservableObject {
     
     nonisolated private func processApp(at path: String) -> AppItem? {
         let url = URL(fileURLWithPath: path)
-        let name = url.deletingPathExtension().lastPathComponent
+        let filename = url.deletingPathExtension().lastPathComponent
         
-        // Generate Pinyin and Initials
+        var name = filename
+        
+        // 1. Try to get localized name from MDItem (Spotlight Metadata) - Most accurate as seen in Finder
+        if let mdItem = MDItemCreateWithURL(kCFAllocatorDefault, url as CFURL),
+           let displayName = MDItemCopyAttribute(mdItem, kMDItemDisplayName) as? String {
+            name = displayName
+        } 
+        // 2. Fallback to Bundle Localized Info Dictionary
+        else if let bundle = Bundle(url: url) {
+            if let localizedInfo = bundle.localizedInfoDictionary,
+               let bundleName = localizedInfo["CFBundleDisplayName"] as? String ?? localizedInfo["CFBundleName"] as? String {
+                name = bundleName
+            } else if let info = bundle.infoDictionary,
+                      let bundleName = info["CFBundleDisplayName"] as? String ?? info["CFBundleName"] as? String {
+                name = bundleName
+            }
+        }
+        
+        // 3. Fallback to URL resource values
+         if name == filename,
+            let resourceValues = try? url.resourceValues(forKeys: [.localizedNameKey]),
+            let localizedName = resourceValues.localizedName {
+             name = localizedName
+         }
+         
+         // 4. Manual fallback for Chinese environment if host app is not localized
+         // This is necessary because if the host app (OneStep) doesn't declare Chinese support in Info.plist,
+         // Bundle(url:) might default to English resources even on a Chinese system.
+         let isChineseSystem = Locale.preferredLanguages.first?.hasPrefix("zh") ?? false
+         if isChineseSystem {
+             if let bundle = Bundle(url: url) {
+                  let searchPaths = ["zh-Hans", "zh-CN", "zh-Hant", "zh_TW", "zh"]
+                  for lang in searchPaths {
+                      if let path = bundle.path(forResource: "InfoPlist", ofType: "strings", inDirectory: "\(lang).lproj"),
+                         let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                          if let zhName = dict["CFBundleDisplayName"] as? String ?? dict["CFBundleName"] as? String {
+                              name = zhName
+                              break
+                          }
+                      }
+                  }
+             }
+         }
+         
+         // Remove .app extension if present
+        if name.hasSuffix(".app") {
+            name = String(name.dropLast(4))
+        }
+        
+        // Generate Pinyin and Initials based on display name
         let pinyin = name.toPinyin()
         let initials = name.toPinyinInitials()
         
-        return AppItem(name: name, path: path, pinyin: pinyin, initials: initials)
+        return AppItem(name: name, fileSystemName: filename, path: path, pinyin: pinyin, initials: initials)
     }
     
     func search(text: String) -> [AppItem] {
@@ -107,6 +158,7 @@ class AppManager: ObservableObject {
         
         return apps.filter { app in
             app.name.lowercased().contains(lowerText) ||
+            app.fileSystemName.lowercased().contains(lowerText) ||
             app.pinyin.contains(lowerText) ||
             app.initials.contains(lowerText)
         }
