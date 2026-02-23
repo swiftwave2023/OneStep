@@ -82,7 +82,7 @@ struct SettingsView: View {
                 ContactUsPageView(appName: appModel.appName, isPro: appModel.isPro)
             case .rateUs:
                 // Rate logic handled in onChange, but we need a view here
-                Text("Redirecting to App Store...")
+                Text(NSLocalizedString("Redirecting to App Store...", comment: ""))
                     .onAppear {
                         // In case onChange doesn't catch it or we navigate directly
                         RateUtil.requestReview(id: appModel.appId)
@@ -142,9 +142,9 @@ struct SettingsView: View {
             return store.products.map { IAPProductDisplay(product: $0) }
         } else {
             return [
-                IAPProductDisplay(id: "product.com.swiftwave.onestep.monthly", displayName: "Monthly", displayPrice: "$1.99", type: .autoRenewable, unit: .month),
-                IAPProductDisplay(id: "product.com.swiftwave.onestep.yearly", displayName: "Yearly", displayPrice: "$9.99", type: .autoRenewable, unit: .year, isFreeTrial: true, trialDays: 7),
-                IAPProductDisplay(id: "product.com.swiftwave.onestep.lifetime", displayName: "Lifetime", displayPrice: "$29.99", type: .nonConsumable)
+                IAPProductDisplay(id: "product.com.swiftwave.onestep.monthly", displayName: NSLocalizedString("Monthly", comment: ""), displayPrice: "$1.99", type: .autoRenewable, unit: .month),
+                IAPProductDisplay(id: "product.com.swiftwave.onestep.yearly", displayName: NSLocalizedString("Yearly", comment: ""), displayPrice: "$9.99", type: .autoRenewable, unit: .year, isFreeTrial: true, trialDays: 7),
+                IAPProductDisplay(id: "product.com.swiftwave.onestep.lifetime", displayName: NSLocalizedString("Lifetime", comment: ""), displayPrice: "$29.99", type: .nonConsumable)
             ]
         }
     }

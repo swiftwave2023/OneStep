@@ -1,0 +1,105 @@
+/* Arabic (ar) */
+"Default Search Engine" = "محرك البحث الافتراضي";
+"Bookmarks" = "الإشارات المرجعية";
+"No bookmarks added yet." = "لم تتم إضافة إشارات مرجعية بعد.";
+"You can use /web command to search your bookmarks quickly." = "يمكنك استخدام الأمر /web للبحث في إشاراتك المرجعية بسرعة.";
+"Add New Bookmark" = "إضافة إشارة مرجعية جديدة";
+"Title" = "العنوان";
+"URL" = "الرابط";
+"Cancel" = "إلغاء";
+"Add" = "إضافة";
+"Web Search" = "بحث الويب";
+"File Search" = "بحث الملفات";
+"General" = "عام";
+"IAP" = "عمليات الشراء داخل التطبيق";
+"Contact Us" = "اتصل بنا";
+"Rate Us" = "قيمنا";
+"File Search Scopes" = "نطاقات بحث الملفات";
+"Add folders to include in file search results (use /files command)." = "أضف مجلدات لتضمينها في نتائج بحث الملفات (استخدم الأمر /files).";
+"No Search Scopes" = "لا توجد نطاقات بحث";
+"Add folders to start searching files." = "أضف مجلدات لبدء البحث في الملفات.";
+"Add Folder" = "إضافة مجلد";
+"Reset to Defaults" = "إعادة تعيين إلى الافتراضيات";
+"Search Web for '%@'" = "بحث في الويب عن '%@'";
+"Using %@" = "باستخدام %@";
+
+"Search apps..." = "البحث عن التطبيقات...";
+"Search or type / for commands…" = "ابحث أو اكتب / للأوامر...";
+"No matching apps" = "لا توجد تطبيقات مطابقة";
+"Type to search files" = "اكتب للبحث في الملفات";
+"No matching commands" = "لا توجد أوامر مطابقة";
+"No results" = "لا توجد نتائج";
+"Type / to see available commands" = "اكتب / لرؤية الأوامر المتاحة";
+"Try different keywords or type / for commands" = "جرب كلمات مفتاحية مختلفة أو اكتب / للأوامر";
+"Show all apps" = "عرض جميع التطبيقات";
+"Search files" = "بحث الملفات";
+"Web search & bookmarks" = "بحث الويب والإشارات المرجعية";
+"Open Settings" = "فتح الإعدادات";
+"Quit OneStep" = "إنهاء OneStep";
+
+"Toggle OneStep:" = "تبديل OneStep:";
+"Shortcuts" = "الاختصارات";
+"Show Dock Icon" = "إظهار أيقونة Dock";
+"Show Menu Bar Icon" = "إظهار أيقونة شريط القوائم";
+"Appearance" = "المظهر";
+
+"Enhanced Search" = "بحث محسن";
+"Search deeper into your system." = "ابحث بعمق في نظامك.";
+"Advanced Commands" = "أوامر متقدمة";
+"Execute system commands directly." = "نفذ أوامر النظام مباشرة.";
+"Priority Support" = "دعم ذو أولوية";
+"Get priority support for any issues." = "احصل على دعم ذو أولوية لأي مشاكل.";
+"More Features Coming Soon" = "المزيد من الميزات قريبا";
+"Stay tuned for more exciting features." = "ترقبوا المزيد من الميزات المثيرة.";
+
+"Import from HTML" = "استيراد من HTML";
+"Export to HTML" = "تصدير إلى HTML";
+"Reset to Default Bookmarks" = "إعادة تعيين إلى الإشارات المرجعية الافتراضية";
+"Reset to Default?" = "إعادة تعيين إلى الافتراضي؟";
+"Reset" = "إعادة تعيين";
+"This will replace all current bookmarks with the default list." = "سيؤدي هذا إلى استبدال جميع الإشارات المرجعية الحالية بالقائمة الافتراضية.";
+"Clear All Bookmarks" = "مسح جميع الإشارات المرجعية";
+"Are you sure you want to clear all bookmarks?" = "هل أنت متأكد أنك تريد مسح جميع الإشارات المرجعية؟";
+"Clear All" = "مسح الكل";
+"This action cannot be undone." = "لا يمكن التراجع عن هذا الإجراء.";
+"How to export bookmarks" = "كيفية تصدير الإشارات المرجعية";
+"Export Bookmarks Guide" = "دليل تصدير الإشارات المرجعية";
+"Follow these steps to export your bookmarks as an HTML file, then import it here." = "اتبع هذه الخطوات لتصدير إشاراتك المرجعية كملف HTML، ثم استوردها هنا.";
+"File > Export Bookmarks..." = "ملف > تصدير الإشارات المرجعية...";
+"Save the HTML file" = "حفظ ملف HTML";
+"⋮ Menu > Bookmarks > Bookmark Manager" = "⋮ القائمة > الإشارات المرجعية > مدير الإشارات المرجعية";
+"⋮ Menu (top right) > Export bookmarks" = "⋮ القائمة (أعلى اليمين) > تصدير الإشارات المرجعية";
+"Favorites (⭐️) > More options (…)" = "المفضلة (⭐️) > خيارات إضافية ( … )";
+"Export favorites" = "تصدير المفضلة";
+"Bookmarks > Manage Bookmarks" = "الإشارات المرجعية > إدارة الإشارات المرجعية";
+"Import and Backup > Export Bookmarks to HTML..." = "استيراد ونسخ احتياطي > تصدير الإشارات المرجعية إلى HTML...";
+
+"Add Search Scope" = "إضافة نطاق بحث";
+
+"Features" = "الميزات";
+"terms and privacy" = "الشروط والخصوصية";
+"Upgrade to" = "ترقية إلى";
+"Thanks for going Pro" = "شكرًا لاشتراكك في Pro";
+"Restore" = "استعادة";
+"Most Popular" = "الأكثر شيوعًا";
+"Active" = "نشط";
+"%d-Day Trial" = "تجربة لمدة %d يوم";
+"Forever Pro" = "Pro للأبد";
+
+"File Search" = "بحث الملفات";
+"Web Search" = "بحث الويب";
+"General" = "عام";
+"Upgrade to Pro" = "ترقية إلى Pro";
+"Redemption" = "استرداد";
+"Contact" = "اتصال";
+"Rate" = "تقييم";
+"Monthly" = "شهري";
+"Yearly" = "سنوي";
+"Lifetime" = "مدى الحياة";
+"Redirecting to App Store..." = "جاري التحويل إلى App Store...";
+"Settings..." = "الإعدادات...";
+
+"More Apps" = "المزيد من التطبيقات";
+"Retry" = "إعادة المحاولة";
+"No apps available" = "لا توجد تطبيقات متاحة";
+"PRO" = "PRO";

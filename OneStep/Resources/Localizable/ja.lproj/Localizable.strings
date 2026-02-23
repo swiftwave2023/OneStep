@@ -1,0 +1,105 @@
+/* Japanese (ja) */
+"Default Search Engine" = "デフォルトの検索エンジン";
+"Bookmarks" = "ブックマーク";
+"No bookmarks added yet." = "ブックマークはまだ追加されていません。";
+"You can use /web command to search your bookmarks quickly." = "/web コマンドを使用して、ブックマークをすばやく検索できます。";
+"Add New Bookmark" = "新しいブックマークを追加";
+"Title" = "タイトル";
+"URL" = "URL";
+"Cancel" = "キャンセル";
+"Add" = "追加";
+"Web Search" = "ウェブ検索";
+"File Search" = "ファイル検索";
+"General" = "一般";
+"IAP" = "アプリ内課金";
+"Contact Us" = "お問い合わせ";
+"Rate Us" = "評価する";
+"File Search Scopes" = "ファイル検索範囲";
+"Add folders to include in file search results (use /files command)." = "ファイル検索結果に含めるフォルダを追加します（/files コマンドを使用）。";
+"No Search Scopes" = "検索範囲なし";
+"Add folders to start searching files." = "フォルダを追加してファイルの検索を開始します。";
+"Add Folder" = "フォルダを追加";
+"Reset to Defaults" = "デフォルトにリセット";
+"Search Web for '%@'" = "'%@' をウェブで検索";
+"Using %@" = "%@ を使用";
+
+"Search apps..." = "アプリを検索...";
+"Search or type / for commands…" = "検索またはコマンドのために / を入力...";
+"No matching apps" = "一致するアプリはありません";
+"Type to search files" = "入力してファイルを検索";
+"No matching commands" = "一致するコマンドはありません";
+"No results" = "結果なし";
+"Type / to see available commands" = "/ を入力して利用可能なコマンドを表示";
+"Try different keywords or type / for commands" = "別のキーワードを試すか、コマンドのために / を入力してください";
+"Show all apps" = "すべてのアプリを表示";
+"Search files" = "ファイルを検索";
+"Web search & bookmarks" = "ウェブ検索とブックマーク";
+"Open Settings" = "設定を開く";
+"Quit OneStep" = "OneStep を終了";
+
+"Toggle OneStep:" = "OneStep の切り替え:";
+"Shortcuts" = "ショートカット";
+"Show Dock Icon" = "Dock アイコンを表示";
+"Show Menu Bar Icon" = "メニューバーアイコンを表示";
+"Appearance" = "外観";
+
+"Enhanced Search" = "拡張検索";
+"Search deeper into your system." = "システムをより深く検索します。";
+"Advanced Commands" = "高度なコマンド";
+"Execute system commands directly." = "システムコマンドを直接実行します。";
+"Priority Support" = "優先サポート";
+"Get priority support for any issues." = "あらゆる問題に対して優先的なサポートを受けられます。";
+"More Features Coming Soon" = "その他の機能も近日公開予定";
+"Stay tuned for more exciting features." = "さらなるエキサイティングな機能にご期待ください。";
+
+"Import from HTML" = "HTML からインポート";
+"Export to HTML" = "HTML にエクスポート";
+"Reset to Default Bookmarks" = "デフォルトのブックマークにリセット";
+"Reset to Default?" = "デフォルトにリセットしますか？";
+"Reset" = "リセット";
+"This will replace all current bookmarks with the default list." = "これにより、現在のすべてのブックマークがデフォルトのリストに置き換わります。";
+"Clear All Bookmarks" = "すべてのブックマークをクリア";
+"Are you sure you want to clear all bookmarks?" = "すべてのブックマークをクリアしてもよろしいですか？";
+"Clear All" = "すべてクリア";
+"This action cannot be undone." = "この操作は取り消せません。";
+"How to export bookmarks" = "ブックマークのエクスポート方法";
+"Export Bookmarks Guide" = "ブックマークのエクスポートガイド";
+"Follow these steps to export your bookmarks as an HTML file, then import it here." = "以下の手順に従ってブックマークを HTML ファイルとしてエクスポートし、ここにインポートしてください。";
+"File > Export Bookmarks..." = "ファイル > ブックマークをエクスポート...";
+"Save the HTML file" = "HTML ファイルを保存";
+"⋮ Menu > Bookmarks > Bookmark Manager" = "⋮ メニュー > ブックマーク > ブックマークマネージャ";
+"⋮ Menu (top right) > Export bookmarks" = "⋮ メニュー (右上) > ブックマークをエクスポート";
+"Favorites (⭐️) > More options (…)" = "お気に入り (⭐️) > その他のオプション (…)";
+"Export favorites" = "お気に入りをエクスポート";
+"Bookmarks > Manage Bookmarks" = "ブックマーク > ブックマークを管理";
+"Import and Backup > Export Bookmarks to HTML..." = "インポートとバックアップ > ブックマークを HTML にエクスポート...";
+
+"Add Search Scope" = "検索範囲を追加";
+
+"Features" = "機能";
+"terms and privacy" = "利用規約とプライバシー";
+"Upgrade to" = "アップグレード";
+"Thanks for going Pro" = "Pro 版をご利用いただきありがとうございます";
+"Restore" = "復元";
+"Most Popular" = "一番人気";
+"Active" = "有効";
+"%d-Day Trial" = "%d 日間トライアル";
+"Forever Pro" = "永久 Pro";
+
+"File Search" = "ファイル検索";
+"Web Search" = "ウェブ検索";
+"General" = "一般";
+"Upgrade to Pro" = "Pro にアップグレード";
+"Redemption" = "引き換え";
+"Contact" = "お問い合わせ";
+"Rate" = "評価";
+"Monthly" = "月額";
+"Yearly" = "年額";
+"Lifetime" = "生涯";
+"Redirecting to App Store..." = "App Store にリダイレクトしています...";
+"Settings..." = "設定...";
+
+"More Apps" = "その他のアプリ";
+"Retry" = "再試行";
+"No apps available" = "利用可能なアプリはありません";
+"PRO" = "PRO";

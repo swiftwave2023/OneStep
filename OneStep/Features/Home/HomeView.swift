@@ -115,7 +115,7 @@ struct HomeView: View {
     }
     
     private var searchTextField: some View {
-        TextField(selectedCommand == nil ? "Search or type / for commands…" : "Search apps...", text: $searchText)
+        TextField(selectedCommand == nil ? NSLocalizedString("Search or type / for commands…", comment: "") : NSLocalizedString("Search apps...", comment: ""), text: $searchText)
             .font(.system(size: 26, weight: .light))
             .textFieldStyle(.plain)
             .focused($isFocused)
@@ -187,7 +187,7 @@ struct HomeView: View {
         return Group {
             if appsToShow.isEmpty {
                  VStack(spacing: 6) {
-                    Text("No matching apps")
+                    Text(NSLocalizedString("No matching apps", comment: ""))
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.secondary)
                 }
@@ -208,7 +208,7 @@ struct HomeView: View {
             Image(systemName: "doc.magnifyingglass")
                 .font(.system(size: 24))
                 .foregroundStyle(.secondary)
-            Text("Type to search files")
+            Text(NSLocalizedString("Type to search files", comment: ""))
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(.secondary)
         }
@@ -235,10 +235,10 @@ struct HomeView: View {
             } else {
                 let isCommand = searchText.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("/")
                 VStack(spacing: 6) {
-                    Text(isCommand ? "No matching commands" : "No results")
+                    Text(isCommand ? NSLocalizedString("No matching commands", comment: "") : NSLocalizedString("No results", comment: ""))
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.secondary)
-                    Text(isCommand ? "Type / to see available commands" : "Try different keywords or type / for commands")
+                    Text(isCommand ? NSLocalizedString("Type / to see available commands", comment: "") : NSLocalizedString("Try different keywords or type / for commands", comment: ""))
                         .font(.system(size: 12))
                         .foregroundColor(.secondary.opacity(0.9))
                 }
@@ -365,8 +365,8 @@ struct HomeView: View {
                 if !trimmed.isEmpty, let webURL = webSearchService.getSearchURL(for: trimmed) {
                     let webItem = SuggestionItem(
                         icon: .system("globe"),
-                        title: "Search Web for '\(trimmed)'",
-                        subtitle: "Using \(webSearchService.selectedSearchEngine.rawValue)",
+                        title: String(format: NSLocalizedString("Search Web for '%@'", comment: ""), trimmed),
+                        subtitle: String(format: NSLocalizedString("Using %@", comment: ""), webSearchService.selectedSearchEngine.rawValue),
                         action: {
                             NSWorkspace.shared.open(webURL)
                             searchText = ""
@@ -386,7 +386,7 @@ struct HomeView: View {
             SuggestionItem(
                 icon: .system("square.grid.2x2"),
                 title: "/apps",
-                subtitle: "Show all apps",
+                subtitle: NSLocalizedString("Show all apps", comment: ""),
                 action: {
                     selectCommand(title: "/apps")
                 }
@@ -394,7 +394,7 @@ struct HomeView: View {
             SuggestionItem(
                 icon: .system("folder"),
                 title: "/files",
-                subtitle: "Search files",
+                subtitle: NSLocalizedString("Search files", comment: ""),
                 action: {
                     selectCommand(title: "/files")
                 }
@@ -402,7 +402,7 @@ struct HomeView: View {
             SuggestionItem(
                 icon: .system("globe"),
                 title: "/web",
-                subtitle: "Web search & bookmarks",
+                subtitle: NSLocalizedString("Web search & bookmarks", comment: ""),
                 action: {
                     selectCommand(title: "/web")
                 }
@@ -410,7 +410,7 @@ struct HomeView: View {
             SuggestionItem(
                 icon: .system("gearshape"),
                 title: "/settings",
-                subtitle: "Open Settings",
+                subtitle: NSLocalizedString("Open Settings", comment: ""),
                 action: {
                     openSettings()
                     searchText = ""
@@ -420,7 +420,7 @@ struct HomeView: View {
             SuggestionItem(
                 icon: .system("power"),
                 title: "/quit",
-                subtitle: "Quit OneStep",
+                subtitle: NSLocalizedString("Quit OneStep", comment: ""),
                 action: {
                     NSApplication.shared.terminate(nil)
                 }

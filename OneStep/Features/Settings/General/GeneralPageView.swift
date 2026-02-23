@@ -18,30 +18,30 @@ struct GeneralPageView: View {
         Form {
             Section {
                 HStack {
-                    Text("Toggle OneStep:")
+                    Text(NSLocalizedString("Toggle OneStep:", comment: ""))
                     Spacer()
                     KeyboardShortcuts.Recorder(for: .toggleOneStep)
                 }
             } header: {
-                Text("Shortcuts")
+                Text(NSLocalizedString("Shortcuts", comment: ""))
             }
             
             Section {
-                Toggle("Show Dock Icon", isOn: $showDockIcon)
+                Toggle(NSLocalizedString("Show Dock Icon", comment: ""), isOn: $showDockIcon)
                     .onChange(of: showDockIcon) { _, newValue in
                         updateDockIconVisibility(show: newValue)
                     }
                 
-                Toggle("Show Menu Bar Icon", isOn: $showMenuBarIcon)
+                Toggle(NSLocalizedString("Show Menu Bar Icon", comment: ""), isOn: $showMenuBarIcon)
                     .onChange(of: showMenuBarIcon) { _, newValue in
                         updateMenuBarIconVisibility(show: newValue)
                     }
             } header: {
-                Text("Appearance")
+                Text(NSLocalizedString("Appearance", comment: ""))
             }
         }
         .formStyle(.grouped)
-        .navigationTitle("General")
+        .navigationTitle(NSLocalizedString("General", comment: ""))
     }
     
     private func updateDockIconVisibility(show: Bool) {

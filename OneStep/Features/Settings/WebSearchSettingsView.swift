@@ -22,7 +22,7 @@ struct WebSearchSettingsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Picker("Default Search Engine", selection: $webService.selectedSearchEngine) {
+            Picker(NSLocalizedString("Default Search Engine", comment: ""), selection: $webService.selectedSearchEngine) {
                 ForEach(SearchEngine.allCases) { engine in
                     Text(engine.rawValue).tag(engine)
                 }
@@ -30,11 +30,11 @@ struct WebSearchSettingsView: View {
             .pickerStyle(.menu)
             
             VStack(alignment: .leading, spacing: 8) {
-                Text("Bookmarks")
+                Text(NSLocalizedString("Bookmarks", comment: ""))
                     .font(.headline)
                 
                 if webService.bookmarks.isEmpty {
-                    Text("No bookmarks added yet.")
+                    Text(NSLocalizedString("No bookmarks added yet.", comment: ""))
                         .foregroundStyle(.secondary)
                         .padding(.vertical, 8)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -109,7 +109,7 @@ struct WebSearchSettingsView: View {
                         Image(systemName: "plus")
                     }
                     .buttonStyle(.plain)
-                    .help("Add Bookmark")
+                    .help(NSLocalizedString("Add Bookmark", comment: ""))
                     
                     Button {
                         showingImporter = true
@@ -117,7 +117,7 @@ struct WebSearchSettingsView: View {
                         Image(systemName: "arrow.up.document")
                     }
                     .buttonStyle(.plain)
-                    .help("Import from HTML")
+                    .help(NSLocalizedString("Import from HTML", comment: ""))
                     
                     Button {
                         exportBookmarks()
@@ -125,7 +125,7 @@ struct WebSearchSettingsView: View {
                         Image(systemName: "arrow.down.document")
                     }
                     .buttonStyle(.plain)
-                    .help("Export to HTML")
+                    .help(NSLocalizedString("Export to HTML", comment: ""))
                     
                     Button {
                         showingResetConfirmation = true
@@ -133,16 +133,16 @@ struct WebSearchSettingsView: View {
                         Image(systemName: "arrow.clockwise")
                     }
                     .buttonStyle(.plain)
-                    .help("Reset to Default Bookmarks")
-                    .confirmationDialog("Reset to Default?", isPresented: $showingResetConfirmation) {
-                        Button("Reset", role: .destructive) {
+                    .help(NSLocalizedString("Reset to Default Bookmarks", comment: ""))
+                    .confirmationDialog(NSLocalizedString("Reset to Default?", comment: ""), isPresented: $showingResetConfirmation) {
+                        Button(NSLocalizedString("Reset", comment: ""), role: .destructive) {
                             withAnimation {
                                 webService.resetBookmarksToDefault()
                             }
                         }
-                        Button("Cancel", role: .cancel) {}
+                        Button(NSLocalizedString("Cancel", comment: ""), role: .cancel) {}
                     } message: {
-                        Text("This will replace all current bookmarks with the default list.")
+                        Text(NSLocalizedString("This will replace all current bookmarks with the default list.", comment: ""))
                     }
                     
                     Spacer()
@@ -155,16 +155,16 @@ struct WebSearchSettingsView: View {
                     }
                     .buttonStyle(.plain)
                     .disabled(webService.bookmarks.isEmpty)
-                    .help("Clear All Bookmarks")
-                    .confirmationDialog("Are you sure you want to clear all bookmarks?", isPresented: $showingClearConfirmation) {
-                        Button("Clear All", role: .destructive) {
+                    .help(NSLocalizedString("Clear All Bookmarks", comment: ""))
+                    .confirmationDialog(NSLocalizedString("Are you sure you want to clear all bookmarks?", comment: ""), isPresented: $showingClearConfirmation) {
+                        Button(NSLocalizedString("Clear All", comment: ""), role: .destructive) {
                             withAnimation {
                                 webService.removeAllBookmarks()
                             }
                         }
-                        Button("Cancel", role: .cancel) {}
+                        Button(NSLocalizedString("Cancel", comment: ""), role: .cancel) {}
                     } message: {
-                        Text("This action cannot be undone.")
+                        Text(NSLocalizedString("This action cannot be undone.", comment: ""))
                     }
                     
                     Divider()
@@ -176,13 +176,13 @@ struct WebSearchSettingsView: View {
                         Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(.plain)
-                    .help("How to export bookmarks")
+                    .help(NSLocalizedString("How to export bookmarks", comment: ""))
                     .popover(isPresented: $showingHelp) {
                         BookmarkImportHelpView()
                     }
                 }
                 
-                Text("You can use /web command to search your bookmarks quickly.")
+                Text(NSLocalizedString("You can use /web command to search your bookmarks quickly.", comment: ""))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 
@@ -192,23 +192,23 @@ struct WebSearchSettingsView: View {
         .padding()
         .sheet(isPresented: $showingAddBookmark) {
             VStack(spacing: 20) {
-                Text("Add New Bookmark")
+                Text(NSLocalizedString("Add New Bookmark", comment: ""))
                     .font(.headline)
                 
                 VStack(alignment: .leading, spacing: 12) {
-                    TextField("Title", text: $newBookmarkTitle)
-                    TextField("URL", text: $newBookmarkURL)
+                    TextField(NSLocalizedString("Title", comment: ""), text: $newBookmarkTitle)
+                    TextField(NSLocalizedString("URL", comment: ""), text: $newBookmarkURL)
                 }
                 
                 HStack(spacing: 12) {
-                    Button("Cancel") {
+                    Button(NSLocalizedString("Cancel", comment: "")) {
                         showingAddBookmark = false
                         newBookmarkTitle = ""
                         newBookmarkURL = ""
                     }
                     .keyboardShortcut(.cancelAction)
                     
-                    Button("Add") {
+                    Button(NSLocalizedString("Add", comment: "")) {
                         if !newBookmarkTitle.isEmpty && !newBookmarkURL.isEmpty {
                             webService.addBookmark(title: newBookmarkTitle, url: newBookmarkURL)
                             newBookmarkTitle = ""
@@ -282,9 +282,9 @@ struct BookmarkImportHelpView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Export Bookmarks Guide")
+                Text(NSLocalizedString("Export Bookmarks Guide", comment: ""))
                     .font(.headline)
-                Text("Follow these steps to export your bookmarks as an HTML file, then import it here.")
+                Text(NSLocalizedString("Follow these steps to export your bookmarks as an HTML file, then import it here.", comment: ""))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -293,26 +293,26 @@ struct BookmarkImportHelpView: View {
             
             VStack(alignment: .leading, spacing: 16) {
                 browserGuide(name: "Safari", icon: "safari", steps: [
-                    "File > Export Bookmarks...",
-                    "Save the HTML file"
+                    NSLocalizedString("File > Export Bookmarks...", comment: ""),
+                    NSLocalizedString("Save the HTML file", comment: "")
                 ])
                 
                 browserGuide(name: "Google Chrome", icon: "globe", steps: [
-                    "⋮ Menu > Bookmarks > Bookmark Manager",
-                    "⋮ Menu (top right) > Export bookmarks",
-                    "Save the HTML file"
+                    NSLocalizedString("⋮ Menu > Bookmarks > Bookmark Manager", comment: ""),
+                    NSLocalizedString("⋮ Menu (top right) > Export bookmarks", comment: ""),
+                    NSLocalizedString("Save the HTML file", comment: "")
                 ])
                 
                 browserGuide(name: "Microsoft Edge", icon: "globe", steps: [
-                    "Favorites (⭐️) > More options (…)",
-                    "Export favorites",
-                    "Save the HTML file"
+                    NSLocalizedString("Favorites (⭐️) > More options (…)", comment: ""),
+                    NSLocalizedString("Export favorites", comment: ""),
+                    NSLocalizedString("Save the HTML file", comment: "")
                 ])
                 
                 browserGuide(name: "Firefox", icon: "flame", steps: [
-                    "Bookmarks > Manage Bookmarks",
-                    "Import and Backup > Export Bookmarks to HTML...",
-                    "Save the HTML file"
+                    NSLocalizedString("Bookmarks > Manage Bookmarks", comment: ""),
+                    NSLocalizedString("Import and Backup > Export Bookmarks to HTML...", comment: ""),
+                    NSLocalizedString("Save the HTML file", comment: "")
                 ])
             }
         }

@@ -1,0 +1,105 @@
+/* French (fr) */
+"Default Search Engine" = "Moteur de recherche par défaut";
+"Bookmarks" = "Signets";
+"No bookmarks added yet." = "Aucun signet ajouté pour l'instant.";
+"You can use /web command to search your bookmarks quickly." = "Vous pouvez utiliser la commande /web pour rechercher rapidement dans vos signets.";
+"Add New Bookmark" = "Ajouter un nouveau signet";
+"Title" = "Titre";
+"URL" = "URL";
+"Cancel" = "Annuler";
+"Add" = "Ajouter";
+"Web Search" = "Recherche Web";
+"File Search" = "Recherche de fichiers";
+"General" = "Général";
+"IAP" = "Achats intégrés";
+"Contact Us" = "Contactez-nous";
+"Rate Us" = "Notez-nous";
+"File Search Scopes" = "Portées de recherche de fichiers";
+"Add folders to include in file search results (use /files command)." = "Ajoutez des dossiers à inclure dans les résultats de recherche de fichiers (utilisez la commande /files).";
+"No Search Scopes" = "Aucune portée de recherche";
+"Add folders to start searching files." = "Ajoutez des dossiers pour commencer la recherche de fichiers.";
+"Add Folder" = "Ajouter un dossier";
+"Reset to Defaults" = "Rétablir les paramètres par défaut";
+"Search Web for '%@'" = "Rechercher sur le Web pour '%@'";
+"Using %@" = "Utilisation de %@";
+
+"Search apps..." = "Rechercher des applications...";
+"Search or type / for commands…" = "Rechercher ou taper / pour les commandes…";
+"No matching apps" = "Aucune application correspondante";
+"Type to search files" = "Tapez pour rechercher des fichiers";
+"No matching commands" = "Aucune commande correspondante";
+"No results" = "Aucun résultat";
+"Type / to see available commands" = "Tapez / pour voir les commandes disponibles";
+"Try different keywords or type / for commands" = "Essayez différents mots-clés ou tapez / pour les commandes";
+"Show all apps" = "Afficher toutes les applications";
+"Search files" = "Rechercher des fichiers";
+"Web search & bookmarks" = "Recherche Web et signets";
+"Open Settings" = "Ouvrir les paramètres";
+"Quit OneStep" = "Quitter OneStep";
+
+"Toggle OneStep:" = "Basculer OneStep :";
+"Shortcuts" = "Raccourcis";
+"Show Dock Icon" = "Afficher l'icône du Dock";
+"Show Menu Bar Icon" = "Afficher l'icône de la barre des menus";
+"Appearance" = "Apparence";
+
+"Enhanced Search" = "Recherche améliorée";
+"Search deeper into your system." = "Recherchez plus profondément dans votre système.";
+"Advanced Commands" = "Commandes avancées";
+"Execute system commands directly." = "Exécutez directement les commandes système.";
+"Priority Support" = "Support prioritaire";
+"Get priority support for any issues." = "Obtenez un support prioritaire pour tout problème.";
+"More Features Coming Soon" = "Plus de fonctionnalités à venir";
+"Stay tuned for more exciting features." = "Restez à l'écoute pour d'autres fonctionnalités intéressantes.";
+
+"Import from HTML" = "Importer depuis HTML";
+"Export to HTML" = "Exporter vers HTML";
+"Reset to Default Bookmarks" = "Rétablir les signets par défaut";
+"Reset to Default?" = "Rétablir par défaut ?";
+"Reset" = "Rétablir";
+"This will replace all current bookmarks with the default list." = "Cela remplacera tous les signets actuels par la liste par défaut.";
+"Clear All Bookmarks" = "Effacer tous les signets";
+"Are you sure you want to clear all bookmarks?" = "Êtes-vous sûr de vouloir effacer tous les signets ?";
+"Clear All" = "Tout effacer";
+"This action cannot be undone." = "Cette action est irréversible.";
+"How to export bookmarks" = "Comment exporter des signets";
+"Export Bookmarks Guide" = "Guide d'exportation des signets";
+"Follow these steps to export your bookmarks as an HTML file, then import it here." = "Suivez ces étapes pour exporter vos signets sous forme de fichier HTML, puis importez-le ici.";
+"File > Export Bookmarks..." = "Fichier > Exporter les signets...";
+"Save the HTML file" = "Enregistrer le fichier HTML";
+"⋮ Menu > Bookmarks > Bookmark Manager" = "⋮ Menu > Favoris > Gestionnaire de favoris";
+"⋮ Menu (top right) > Export bookmarks" = "⋮ Menu (en haut à droite) > Exporter les favoris";
+"Favorites (⭐️) > More options (…)" = "Favoris (⭐️) > Plus d'options (…)";
+"Export favorites" = "Exporter les favoris";
+"Bookmarks > Manage Bookmarks" = "Signets > Gérer les signets";
+"Import and Backup > Export Bookmarks to HTML..." = "Importer et sauvegarder > Exporter les signets au format HTML...";
+
+"Add Search Scope" = "Ajouter une portée de recherche";
+
+"Features" = "Fonctionnalités";
+"terms and privacy" = "Conditions et confidentialité";
+"Upgrade to" = "Passer à";
+"Thanks for going Pro" = "Merci d'être passé Pro";
+"Restore" = "Restaurer";
+"Most Popular" = "Le plus populaire";
+"Active" = "Actif";
+"%d-Day Trial" = "Essai de %d jours";
+"Forever Pro" = "Pro pour toujours";
+
+"File Search" = "Recherche de fichiers";
+"Web Search" = "Recherche Web";
+"General" = "Général";
+"Upgrade to Pro" = "Passer à Pro";
+"Redemption" = "Utilisation";
+"Contact" = "Contact";
+"Rate" = "Noter";
+"Monthly" = "Mensuel";
+"Yearly" = "Annuel";
+"Lifetime" = "À vie";
+"Redirecting to App Store..." = "Redirection vers l'App Store...";
+"Settings..." = "Paramètres...";
+
+"More Apps" = "Plus d'applications";
+"Retry" = "Réessayer";
+"No apps available" = "Aucune application disponible";
+"PRO" = "PRO";

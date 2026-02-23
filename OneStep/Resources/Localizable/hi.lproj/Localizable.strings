@@ -1,0 +1,105 @@
+/* Hindi (hi) */
+"Default Search Engine" = "डिफ़ॉल्ट खोज इंजन";
+"Bookmarks" = "बुकमार्क";
+"No bookmarks added yet." = "अभी तक कोई बुकमार्क नहीं जोड़ा गया।";
+"You can use /web command to search your bookmarks quickly." = "आप अपने बुकमार्क को जल्दी से खोजने के लिए /web कमांड का उपयोग कर सकते हैं।";
+"Add New Bookmark" = "नया बुकमार्क जोड़ें";
+"Title" = "शीर्षक";
+"URL" = "यूआरएल";
+"Cancel" = "रद्द करें";
+"Add" = "जोड़ें";
+"Web Search" = "वेब खोज";
+"File Search" = "फ़ाइल खोज";
+"General" = "सामान्य";
+"IAP" = "इन-ऐप खरीदारी";
+"Contact Us" = "संपर्क करें";
+"Rate Us" = "हमें रेट करें";
+"File Search Scopes" = "फ़ाइल खोज क्षेत्र";
+"Add folders to include in file search results (use /files command)." = "फ़ाइल खोज परिणामों में शामिल करने के लिए फ़ोल्डर जोड़ें (/files कमांड का उपयोग करें)।";
+"No Search Scopes" = "कोई खोज क्षेत्र नहीं";
+"Add folders to start searching files." = "फ़ाइलें खोजना शुरू करने के लिए फ़ोल्डर जोड़ें।";
+"Add Folder" = "फ़ोल्डर जोड़ें";
+"Reset to Defaults" = "डिफ़ॉल्ट पर रीसेट करें";
+"Search Web for '%@'" = "'%@' के लिए वेब खोजें";
+"Using %@" = "%@ का उपयोग करना";
+
+"Search apps..." = "ऐप्स खोजें...";
+"Search or type / for commands…" = "खोजें या कमांड के लिए / टाइप करें…";
+"No matching apps" = "कोई मेल खाते ऐप्स नहीं";
+"Type to search files" = "फ़ाइलें खोजने के लिए टाइप करें";
+"No matching commands" = "कोई मेल खाते कमांड नहीं";
+"No results" = "कोई परिणाम नहीं";
+"Type / to see available commands" = "उपलब्ध कमांड देखने के लिए / टाइप करें";
+"Try different keywords or type / for commands" = "विभिन्न कीवर्ड आज़माएं या कमांड के लिए / टाइप करें";
+"Show all apps" = "सभी ऐप्स दिखाएं";
+"Search files" = "फ़ाइलें खोजें";
+"Web search & bookmarks" = "वेब खोज और बुकमार्क";
+"Open Settings" = "सेटिंग्स खोलें";
+"Quit OneStep" = "OneStep छोड़ें";
+
+"Toggle OneStep:" = "OneStep टॉगल करें:";
+"Shortcuts" = "शॉर्टकट";
+"Show Dock Icon" = "डॉक आइकन दिखाएं";
+"Show Menu Bar Icon" = "मेनू बार आइकन दिखाएं";
+"Appearance" = "दिखावट";
+
+"Enhanced Search" = "उन्नत खोज";
+"Search deeper into your system." = "अपने सिस्टम में गहराई से खोजें।";
+"Advanced Commands" = "उन्नत कमांड";
+"Execute system commands directly." = "सीधे सिस्टम कमांड निष्पादित करें।";
+"Priority Support" = "प्राथमिकता समर्थन";
+"Get priority support for any issues." = "किसी भी समस्या के लिए प्राथमिकता समर्थन प्राप्त करें।";
+"More Features Coming Soon" = "और सुविधाएँ जल्द ही आ रही हैं";
+"Stay tuned for more exciting features." = "अधिक रोमांचक सुविधाओं के लिए बने रहें।";
+
+"Import from HTML" = "HTML से आयात करें";
+"Export to HTML" = "HTML में निर्यात करें";
+"Reset to Default Bookmarks" = "डिफ़ॉल्ट बुकमार्क पर रीसेट करें";
+"Reset to Default?" = "डिफ़ॉल्ट पर रीसेट करें?";
+"Reset" = "रीसेट";
+"This will replace all current bookmarks with the default list." = "यह सभी मौजूदा बुकमार्क को डिफ़ॉल्ट सूची से बदल देगा।";
+"Clear All Bookmarks" = "सभी बुकमार्क साफ़ करें";
+"Are you sure you want to clear all bookmarks?" = "क्या आप वाकई सभी बुकमार्क साफ़ करना चाहते हैं?";
+"Clear All" = "सभी साफ़ करें";
+"This action cannot be undone." = "यह क्रिया पूर्ववत नहीं की जा सकती।";
+"How to export bookmarks" = "बुकमार्क कैसे निर्यात करें";
+"Export Bookmarks Guide" = "बुकमार्क निर्यात गाइड";
+"Follow these steps to export your bookmarks as an HTML file, then import it here." = "अपने बुकमार्क को HTML फ़ाइल के रूप में निर्यात करने के लिए इन चरणों का पालन करें, फिर इसे यहां आयात करें।";
+"File > Export Bookmarks..." = "फ़ाइल > बुकमार्क निर्यात करें...";
+"Save the HTML file" = "HTML फ़ाइल सहेजें";
+"⋮ Menu > Bookmarks > Bookmark Manager" = "⋮ मेनू > बुकमार्क > बुकमार्क प्रबंधक";
+"⋮ Menu (top right) > Export bookmarks" = "⋮ मेनू (ऊपर दाएं) > बुकमार्क निर्यात करें";
+"Favorites (⭐️) > More options (…)" = "पसंदीदा (⭐️) > अधिक विकल्प (…)";
+"Export favorites" = "पसंदीदा निर्यात करें";
+"Bookmarks > Manage Bookmarks" = "बुकमार्क > बुकमार्क प्रबंधित करें";
+"Import and Backup > Export Bookmarks to HTML..." = "आयात और बैकअप > HTML में बुकमार्क निर्यात करें...";
+
+"Add Search Scope" = "खोज क्षेत्र जोड़ें";
+
+"Features" = "विशेषताएँ";
+"terms and privacy" = "शर्तें और गोपनीयता";
+"Upgrade to" = "इसमें अपग्रेड करें";
+"Thanks for going Pro" = "Pro में जाने के लिए धन्यवाद";
+"Restore" = "बहाल करें";
+"Most Popular" = "सबसे लोकप्रिय";
+"Active" = "सक्रिय";
+"%d-Day Trial" = "%d-दिन का परीक्षण";
+"Forever Pro" = "हमेशा के लिए Pro";
+
+"File Search" = "फ़ाइल खोज";
+"Web Search" = "वेब खोज";
+"General" = "सामान्य";
+"Upgrade to Pro" = "Pro में अपग्रेड करें";
+"Redemption" = "मोचन";
+"Contact" = "संपर्क";
+"Rate" = "रेट";
+"Monthly" = "मासिक";
+"Yearly" = "वार्षिक";
+"Lifetime" = "जीवनकाल";
+"Redirecting to App Store..." = "ऐप स्टोर पर पुनर्निर्देशित किया जा रहा है...";
+"Settings..." = "सेटिंग्स...";
+
+"More Apps" = "और ऐप्स";
+"Retry" = "पुनः प्रयास करें";
+"No apps available" = "कोई ऐप उपलब्ध नहीं";
+"PRO" = "PRO";

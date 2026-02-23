@@ -1,0 +1,105 @@
+/* Italian (it) */
+"Default Search Engine" = "Motore di ricerca predefinito";
+"Bookmarks" = "Segnalibri";
+"No bookmarks added yet." = "Nessun segnalibro aggiunto ancora.";
+"You can use /web command to search your bookmarks quickly." = "Puoi usare il comando /web per cercare rapidamente nei tuoi segnalibri.";
+"Add New Bookmark" = "Aggiungi nuovo segnalibro";
+"Title" = "Titolo";
+"URL" = "URL";
+"Cancel" = "Annulla";
+"Add" = "Aggiungi";
+"Web Search" = "Ricerca Web";
+"File Search" = "Ricerca File";
+"General" = "Generale";
+"IAP" = "Acquisti in-app";
+"Contact Us" = "Contattaci";
+"Rate Us" = "Valutaci";
+"File Search Scopes" = "Ambiti di ricerca file";
+"Add folders to include in file search results (use /files command)." = "Aggiungi cartelle da includere nei risultati della ricerca file (usa il comando /files).";
+"No Search Scopes" = "Nessun ambito di ricerca";
+"Add folders to start searching files." = "Aggiungi cartelle per iniziare a cercare file.";
+"Add Folder" = "Aggiungi cartella";
+"Reset to Defaults" = "Ripristina predefiniti";
+"Search Web for '%@'" = "Cerca sul Web '%@'";
+"Using %@" = "Uso di %@";
+
+"Search apps..." = "Cerca app...";
+"Search or type / for commands…" = "Cerca o digita / per i comandi…";
+"No matching apps" = "Nessuna app corrispondente";
+"Type to search files" = "Digita per cercare file";
+"No matching commands" = "Nessun comando corrispondente";
+"No results" = "Nessun risultato";
+"Type / to see available commands" = "Digita / per vedere i comandi disponibili";
+"Try different keywords or type / for commands" = "Prova parole chiave diverse o digita / per i comandi";
+"Show all apps" = "Mostra tutte le app";
+"Search files" = "Cerca file";
+"Web search & bookmarks" = "Ricerca Web e segnalibri";
+"Open Settings" = "Apri Impostazioni";
+"Quit OneStep" = "Esci da OneStep";
+
+"Toggle OneStep:" = "Attiva/Disattiva OneStep:";
+"Shortcuts" = "Scorciatoie";
+"Show Dock Icon" = "Mostra icona nel Dock";
+"Show Menu Bar Icon" = "Mostra icona nella barra dei menu";
+"Appearance" = "Aspetto";
+
+"Enhanced Search" = "Ricerca avanzata";
+"Search deeper into your system." = "Cerca più a fondo nel tuo sistema.";
+"Advanced Commands" = "Comandi avanzati";
+"Execute system commands directly." = "Esegui direttamente i comandi di sistema.";
+"Priority Support" = "Supporto prioritario";
+"Get priority support for any issues." = "Ottieni supporto prioritario per qualsiasi problema.";
+"More Features Coming Soon" = "Altre funzionalità in arrivo";
+"Stay tuned for more exciting features." = "Resta sintonizzato per altre funzionalità interessanti.";
+
+"Import from HTML" = "Importa da HTML";
+"Export to HTML" = "Esporta in HTML";
+"Reset to Default Bookmarks" = "Ripristina segnalibri predefiniti";
+"Reset to Default?" = "Ripristinare predefiniti?";
+"Reset" = "Ripristina";
+"This will replace all current bookmarks with the default list." = "Questo sostituirà tutti i segnalibri attuali con l'elenco predefinito.";
+"Clear All Bookmarks" = "Cancella tutti i segnalibri";
+"Are you sure you want to clear all bookmarks?" = "Sei sicuro di voler cancellare tutti i segnalibri?";
+"Clear All" = "Cancella tutto";
+"This action cannot be undone." = "Questa azione non può essere annullata.";
+"How to export bookmarks" = "Come esportare i segnalibri";
+"Export Bookmarks Guide" = "Guida all'esportazione dei segnalibri";
+"Follow these steps to export your bookmarks as an HTML file, then import it here." = "Segui questi passaggi per esportare i tuoi segnalibri come file HTML, quindi importalo qui.";
+"File > Export Bookmarks..." = "File > Esporta segnalibri...";
+"Save the HTML file" = "Salva il file HTML";
+"⋮ Menu > Bookmarks > Bookmark Manager" = "⋮ Menu > Segnalibri > Gestione segnalibri";
+"⋮ Menu (top right) > Export bookmarks" = "⋮ Menu (in alto a destra) > Esporta segnalibri";
+"Favorites (⭐️) > More options (…)" = "Preferiti (⭐️) > Altre opzioni (…)";
+"Export favorites" = "Esporta preferiti";
+"Bookmarks > Manage Bookmarks" = "Segnalibri > Gestisci segnalibri";
+"Import and Backup > Export Bookmarks to HTML..." = "Importa e backup > Esporta segnalibri in HTML...";
+
+"Add Search Scope" = "Aggiungi ambito di ricerca";
+
+"Features" = "Funzionalità";
+"terms and privacy" = "Termini e privacy";
+"Upgrade to" = "Passa a";
+"Thanks for going Pro" = "Grazie per essere passato a Pro";
+"Restore" = "Ripristina";
+"Most Popular" = "Più popolare";
+"Active" = "Attivo";
+"%d-Day Trial" = "Prova di %d giorni";
+"Forever Pro" = "Pro per sempre";
+
+"File Search" = "Ricerca File";
+"Web Search" = "Ricerca Web";
+"General" = "Generale";
+"Upgrade to Pro" = "Passa a Pro";
+"Redemption" = "Riscatto";
+"Contact" = "Contatto";
+"Rate" = "Valuta";
+"Monthly" = "Mensile";
+"Yearly" = "Annuale";
+"Lifetime" = "A vita";
+"Redirecting to App Store..." = "Reindirizzamento all'App Store...";
+"Settings..." = "Impostazioni...";
+
+"More Apps" = "Altre app";
+"Retry" = "Riprova";
+"No apps available" = "Nessuna app disponibile";
+"PRO" = "PRO";

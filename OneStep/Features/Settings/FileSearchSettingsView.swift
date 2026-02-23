@@ -13,11 +13,11 @@ struct FileSearchSettingsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("File Search Scopes")
+            Text(NSLocalizedString("File Search Scopes", comment: ""))
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Add folders to include in file search results (use /files command).")
+            Text(NSLocalizedString("Add folders to include in file search results (use /files command).", comment: ""))
                 .foregroundStyle(.secondary)
             
             List {
@@ -54,7 +54,7 @@ struct FileSearchSettingsView: View {
             .overlay(
                 Group {
                     if scopes.isEmpty {
-                        ContentUnavailableView("No Search Scopes", systemImage: "folder.badge.plus", description: Text("Add folders to start searching files."))
+                        ContentUnavailableView(NSLocalizedString("No Search Scopes", comment: ""), systemImage: "folder.badge.plus", description: Text(NSLocalizedString("Add folders to start searching files.", comment: "")))
                     }
                 }
             )
@@ -63,12 +63,12 @@ struct FileSearchSettingsView: View {
                 Button {
                     addScope()
                 } label: {
-                    Label("Add Folder", systemImage: "plus")
+                    Label(NSLocalizedString("Add Folder", comment: ""), systemImage: "plus")
                 }
                 
                 Spacer()
                 
-                Button("Reset to Defaults") {
+                Button(NSLocalizedString("Reset to Defaults", comment: "")) {
                     Defaults.reset(.fileSearchScopes)
                 }
                 .disabled(scopes.isEmpty)
@@ -82,7 +82,7 @@ struct FileSearchSettingsView: View {
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = true
-        panel.prompt = "Add Search Scope"
+        panel.prompt = NSLocalizedString("Add Search Scope", comment: "")
         
         panel.begin { response in
             if response == .OK {
