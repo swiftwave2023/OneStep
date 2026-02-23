@@ -226,19 +226,27 @@ struct HomeView: View {
     private var suggestionsListView: some View {
         VStack(spacing: 0) {
             if !suggestions.isEmpty {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
-                            SuggestionRow(item: item, isSelected: index == selectedIndex)
-                                .onTapGesture {
-                                    item.action()
-                                }
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(spacing: 0) {
+                            ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
+                                SuggestionRow(item: item, isSelected: index == selectedIndex)
+                                    .id(index)
+                                    .onTapGesture {
+                                        item.action()
+                                    }
+                            }
+                        }
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 8)
+                    }
+                    .frame(maxHeight: 360)
+                    .onChange(of: selectedIndex) { _, newIndex in
+                        withAnimation {
+                            proxy.scrollTo(newIndex, anchor: .center)
                         }
                     }
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 8)
                 }
-                .frame(maxHeight: 360)
             } else {
                 let isCommand = searchText.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("/")
                 VStack(spacing: 6) {
