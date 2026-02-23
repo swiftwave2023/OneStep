@@ -505,6 +505,7 @@ struct HomeView: View {
 struct SuggestionRow: View {
     let item: SuggestionItem
     let isSelected: Bool
+    @State private var isHovering = false
     
     var body: some View {
         HStack(spacing: 12) {
@@ -545,9 +546,23 @@ struct SuggestionRow: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(isSelected ? Color.accentColor : Color.clear)
+        .background(
+            ZStack {
+                if isSelected {
+                    Color.accentColor
+                } else if isHovering {
+                    Color.primary.opacity(0.05)
+                } else {
+                    Color.clear
+                }
+            }
+        )
         .cornerRadius(8)
         .padding(.horizontal, 4)
+        .onHover { hovering in
+            isHovering = hovering
+        }
+        .contentShape(Rectangle()) // 确保整个区域都可以响应点击和悬停
     }
 }
 

@@ -20,34 +20,49 @@ struct AppGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 24) {
                 ForEach(apps) { app in
-                    Button {
+                    AppGridItemView(app: app) {
                         onSelect(app)
-                    } label: {
-                        VStack(spacing: 8) {
-                            Image(nsImage: NSWorkspace.shared.icon(forFile: app.path))
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 48, height: 48)
-                            
-                            Text(app.name)
-                                .font(.system(size: 12))
-                                .foregroundColor(.primary)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(2)
-                                .frame(maxWidth: .infinity)
-                        }
-                        .padding(10)
-                        .background(Color.clear)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .onHover { hovering in
-                        // Optional: Add hover effect if needed
                     }
                 }
             }
             .padding(24)
         }
         .frame(height: 400)
+    }
+}
+
+struct AppGridItemView: View {
+    let app: AppItem
+    let onSelect: () -> Void
+    @State private var isHovering = false
+    
+    var body: some View {
+        Button {
+            onSelect()
+        } label: {
+            VStack(spacing: 8) {
+                Image(nsImage: NSWorkspace.shared.icon(forFile: app.path))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 48, height: 48)
+                
+                Text(app.name)
+                    .font(.system(size: 12))
+                    .foregroundColor(.primary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .frame(maxWidth: .infinity)
+            }
+            .padding(10)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isHovering ? Color.primary.opacity(0.05) : Color.clear)
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering in
+            isHovering = hovering
+        }
     }
 }
