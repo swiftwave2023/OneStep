@@ -11,11 +11,13 @@ import AppKit
 enum SuggestionIcon: Equatable {
     case system(String)
     case image(NSImage)
+    case favicon(URL)
     
     static func == (lhs: SuggestionIcon, rhs: SuggestionIcon) -> Bool {
         switch (lhs, rhs) {
         case (.system(let l), .system(let r)): return l == r
         case (.image(let l), .image(let r)): return l === r
+        case (.favicon(let l), .favicon(let r)): return l == r
         default: return false
         }
     }
@@ -104,6 +106,9 @@ struct HomeView: View {
                 Image(nsImage: nsImage)
                     .resizable()
                     .frame(width: 12, height: 12)
+            case .favicon(let url):
+                FaviconImage(url: url)
+                    .frame(width: 12, height: 12)
             }
             Text(command.title)
                 .font(.system(size: 13, weight: .medium))
@@ -176,6 +181,8 @@ struct HomeView: View {
                 } else {
                     suggestionsListView
                 }
+            } else if selectedCommand?.title == "/web" {
+                suggestionsListView
             } else if !searchText.isEmpty {
                 suggestionsListView
             }
@@ -302,12 +309,12 @@ struct HomeView: View {
                 
                 // 2. Bookmarks
                 let bookmarks = webSearchService.searchBookmarks(query: trimmed)
-                // If query is empty, limit to top 5
-                let displayBookmarks = trimmed.isEmpty ? Array(bookmarks.prefix(5)) : bookmarks
                 
-                let bookmarkItems = displayBookmarks.map { bookmark in
-                    SuggestionItem(
-                        icon: .system("bookmark.fill"),
+                let bookmarkItems = bookmarks.map { bookmark in
+                    let faviconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain_url=\(bookmark.url)")
+                    
+                    return SuggestionItem(
+                        icon: faviconURL.map { .favicon($0) } ?? .system("globe"),
                         title: bookmark.title,
                         subtitle: bookmark.url,
                         action: {
@@ -519,6 +526,9 @@ struct SuggestionRow: View {
                 Image(nsImage: nsImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+            case .favicon(let url):
+                FaviconImage(url: url)
                     .frame(width: 24, height: 24)
             }
             
