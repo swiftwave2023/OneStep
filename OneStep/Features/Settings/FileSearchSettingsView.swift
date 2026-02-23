@@ -75,6 +75,7 @@ struct FileSearchSettingsView: View {
             }
         }
         .padding()
+        .navigationTitle(NSLocalizedString("File Search", comment: ""))
     }
     
     private func addScope() {

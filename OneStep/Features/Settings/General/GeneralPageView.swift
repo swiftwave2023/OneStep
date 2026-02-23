@@ -18,7 +18,7 @@ struct GeneralPageView: View {
         Form {
             Section {
                 HStack {
-                    Text(NSLocalizedString("Toggle OneStep:", comment: ""))
+                    Text(NSLocalizedString("Open Search Bar:", comment: ""))
                     Spacer()
                     KeyboardShortcuts.Recorder(for: .toggleOneStep)
                 }

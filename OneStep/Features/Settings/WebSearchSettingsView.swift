@@ -190,6 +190,7 @@ struct WebSearchSettingsView: View {
             }
         }
         .padding()
+        .navigationTitle(NSLocalizedString("Web Search", comment: ""))
         .sheet(isPresented: $showingAddBookmark) {
             VStack(spacing: 20) {
                 Text(NSLocalizedString("Add New Bookmark", comment: ""))
