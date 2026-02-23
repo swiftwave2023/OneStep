@@ -24,15 +24,28 @@ enum SuggestionIcon: Equatable {
 }
 
 struct SuggestionItem: Identifiable, Equatable {
-    let id = UUID()
+    let id: String
     let icon: SuggestionIcon
     let title: String
     let subtitle: String?
     let action: () -> Void
     var fileURL: URL? = nil
     
+    init(id: String? = nil, icon: SuggestionIcon, title: String, subtitle: String?, action: @escaping () -> Void, fileURL: URL? = nil) {
+        self.id = id ?? UUID().uuidString
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+        self.action = action
+        self.fileURL = fileURL
+    }
+    
     static func == (lhs: SuggestionItem, rhs: SuggestionItem) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id &&
+        lhs.icon == rhs.icon &&
+        lhs.title == rhs.title &&
+        lhs.subtitle == rhs.subtitle &&
+        lhs.fileURL == rhs.fileURL
     }
 }
 
@@ -132,8 +145,8 @@ struct HomeView: View {
                 handleCommand()
                 return .handled
             }
-            .onChange(of: searchText) { _, _ in
-                updateSuggestions()
+            .onChange(of: searchText) { _, newValue in
+                updateSuggestions(text: newValue)
             }
             .onChange(of: fileSearchService.files) { _, _ in
                 updateSuggestions()
@@ -231,7 +244,7 @@ struct HomeView: View {
                         LazyVStack(spacing: 0) {
                             ForEach(Array(suggestions.enumerated()), id: \.element.id) { index, item in
                                 SuggestionRow(item: item, isSelected: index == selectedIndex)
-                                    .id(index)
+                                    .id(item.id)
                                     .onTapGesture {
                                         item.action()
                                     }
@@ -242,8 +255,10 @@ struct HomeView: View {
                     }
                     .frame(maxHeight: 360)
                     .onChange(of: selectedIndex) { _, newIndex in
-                        withAnimation {
-                            proxy.scrollTo(newIndex, anchor: .center)
+                        if suggestions.indices.contains(newIndex) {
+                            withAnimation {
+                                proxy.scrollTo(suggestions[newIndex].id, anchor: .center)
+                            }
                         }
                     }
                 }
@@ -266,11 +281,12 @@ struct HomeView: View {
         .padding(.bottom, 12)
     }
     
-    private func updateSuggestions() {
+    private func updateSuggestions(text: String? = nil) {
         // Reset selection when search changes
         selectedIndex = 0
         
-        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let query = text ?? searchText
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if let command = selectedCommand {
             if command.title == "/apps" {
@@ -286,6 +302,7 @@ struct HomeView: View {
                 
                 suggestions = files.map { file in
                     SuggestionItem(
+                        id: file.path,
                         icon: .image(NSWorkspace.shared.icon(forFile: file.path)),
                         title: file.name,
                         subtitle: file.path,
@@ -304,6 +321,7 @@ struct HomeView: View {
                 // 1. Web Search
                 if !trimmed.isEmpty, let url = webSearchService.getSearchURL(for: trimmed) {
                     items.append(SuggestionItem(
+                        id: "web_search_query",
                         icon: .system("magnifyingglass"),
                         title: "Search Web for '\(trimmed)'",
                         subtitle: "Using \(webSearchService.selectedSearchEngine.rawValue)",
@@ -322,6 +340,7 @@ struct HomeView: View {
                     let faviconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain_url=\(bookmark.url)")
                     
                     return SuggestionItem(
+                        id: bookmark.url,
                         icon: faviconURL.map { .favicon($0) } ?? .system("globe"),
                         title: bookmark.title,
                         subtitle: bookmark.url,
@@ -346,6 +365,7 @@ struct HomeView: View {
                 let apps = appManager.search(text: trimmed)
                 let appItems = apps.map { app in
                     SuggestionItem(
+                        id: app.path,
                         icon: .image(NSWorkspace.shared.icon(forFile: app.path)),
                         title: app.name,
                         subtitle: app.path,
@@ -362,6 +382,7 @@ struct HomeView: View {
                 let files = fileSearchService.search(text: trimmed)
                 let fileItems = files.map { file in
                     SuggestionItem(
+                        id: file.path,
                         icon: .image(NSWorkspace.shared.icon(forFile: file.path)),
                         title: file.name,
                         subtitle: file.path,
@@ -379,6 +400,7 @@ struct HomeView: View {
                 // Add Web Search Option
                 if !trimmed.isEmpty, let webURL = webSearchService.getSearchURL(for: trimmed) {
                     let webItem = SuggestionItem(
+                        id: "web_search_fallback",
                         icon: .system("globe"),
                         title: String(format: NSLocalizedString("Search Web for '%@'", comment: ""), trimmed),
                         subtitle: String(format: NSLocalizedString("Using %@", comment: ""), webSearchService.selectedSearchEngine.rawValue),
@@ -399,6 +421,7 @@ struct HomeView: View {
     private func commandSuggestions(matching input: String) -> [SuggestionItem] {
         let all: [SuggestionItem] = [
             SuggestionItem(
+                id: "cmd_apps",
                 icon: .system("square.grid.2x2"),
                 title: "/apps",
                 subtitle: NSLocalizedString("Show all apps", comment: ""),
@@ -407,6 +430,7 @@ struct HomeView: View {
                 }
             ),
             SuggestionItem(
+                id: "cmd_files",
                 icon: .system("folder"),
                 title: "/files",
                 subtitle: NSLocalizedString("Search files", comment: ""),
@@ -415,6 +439,7 @@ struct HomeView: View {
                 }
             ),
             SuggestionItem(
+                id: "cmd_web",
                 icon: .system("globe"),
                 title: "/web",
                 subtitle: NSLocalizedString("Web search & bookmarks", comment: ""),
@@ -423,6 +448,7 @@ struct HomeView: View {
                 }
             ),
             SuggestionItem(
+                id: "cmd_settings",
                 icon: .system("gearshape"),
                 title: "/settings",
                 subtitle: NSLocalizedString("Open Settings", comment: ""),
@@ -433,6 +459,7 @@ struct HomeView: View {
                 }
             ),
             SuggestionItem(
+                id: "cmd_quit",
                 icon: .system("power"),
                 title: "/quit",
                 subtitle: NSLocalizedString("Quit OneStep", comment: ""),
@@ -442,10 +469,15 @@ struct HomeView: View {
             )
         ]
         
-        if input == "/" {
+        let trimmedInput = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedInput == "/" {
             return all
         }
-        return all.filter { $0.title.hasPrefix(input) }
+        
+        // 确保不区分大小写
+        return all.filter { 
+            $0.title.lowercased().hasPrefix(trimmedInput.lowercased()) 
+        }
     }
     
     private func selectCommand(title: String) {
